@@ -1,0 +1,185 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Fall of the BGC Game Design Document</title>
+	</head>
+    <body>
+        <small>
+            <a href="index.html" target="_top"><img src="http://www.sloperama.com/images/mobileicon.png" border="0" height="16">&nbsp;Go back to the main page</a>
+        </small>
+
+        <h2 style="width:750px" align="center">
+            Fall of the BGC<br />
+            Game Design Document
+           </h2>
+          
+           <h4 style="width:750px" align="center">
+            by Min Kwak, Alexander Gentile, Joyce Qiu
+           </h4>
+          
+          <div id="content">
+          
+            <h3>INTRODUCTION</h3>
+          
+            <p>This document describes a game called "Fall of the BGC" which is designed to be a top-down roguelike game that will use custom music, tilemaps, enemy, and player sprites. You have to challenge defeating enemies and the final boss. Have fun!
+            </p>
+          <br />
+          
+            <h3>TECHNOLOGY</h3>
+          
+            <p>Fall of the BGC will be made using a game engine called Wolfie2D which uses Typescript. Tilemaps and Tiles will be created using Piskel and Tiled. </p>
+          <br />
+          
+            <h3>BACK STORY</h3>
+          
+            <p>The Bad Guys Corporation(BGC) has done lots of very very bad things whatever you imagine. And the boss overworks his employees every day. The Smith bros and employees overworked every day got suddenly kicked out from the BGC. So, the family requests the Good Guys Corporation (GGC) to get their money back. The Player, whose name is Good Guy Lukas, has been given a mission by the GGC to take down the BGC.
+            </p>
+          <br />
+          
+            <h3>OBJECTIVE</h3>
+          
+            <p>The player’s mission is to enter the BGC headquarters and take out the CEO of the BGC found on the 3rd floor of the tower, but in order to get to the top of the headquarters the player must traverse the floors of the tower and take out whatever enemies lie in their path using the weapons they buy from the shops in the building or just their fists.</p>
+          
+            <br />
+          
+            <h3>GAMEPLAY</h3>
+          
+            <p>The player will begin their mission on the first floor of the building, their starting weapon is just their fists which they can use to attack enemies. On each floor there are rooms and these rooms are categorized into 3 types. There are enemy rooms, shop rooms, and boss rooms.
+            </p>
+             <ul>
+                <li>Enemy rooms: There are 3 enemy rooms per floor. These rooms consist of enemies that want to attack you. On the first floor there will be 3-5 enemies, second floor 5-7, third floor 7-9.
+                </li>
+                <li>Shop rooms: These rooms are a safe space where you can purchase new weapons and abilities using money that the enemies drop when you defeat them.
+                </li>
+                <li>Shop rooms: These rooms are a safe space where you can purchase new weapons and abilities using money that the enemies drop when you defeat them.
+                </li>
+                <li>Boss rooms: These rooms are where you can fight the boss on the floor. Beating the boss gives you access to go to the next floor.                    
+                </li>
+             </ul>
+          
+            <p>On each floor, there will be 3 enemy rooms, 1 shop room, and 1 boss room, but it can be changed flexible.
+            </p>
+          
+            <p>The acid-protective suits have a strange effect on the room and as a result the balloons. And so, depending on the suit being worn by Spike, the balloons will behave differently as follows:</p>
+          
+            <br />
+          
+            <h3>CONTROLS</h3>
+          
+            <p>This game will be played using both a keyboard and mouse. Once started, use the following:</p>
+          
+             <ul>
+                <li><strong>W</strong> - Move Up</li>
+                <li><strong>S</strong> - Move Down</li>
+                <li><strong>A</strong> - Move Left</li>
+                <li><strong>D</strong> - Move Right</li>
+                <li><strong>SPACE</strong> - Attack</li>
+                <li><strong>M</strong> - Shows map of the floor</li>
+                <li><strong>ESC</strong> - This pauses the game and shows the paused menu</li>
+            </ul>
+            <br />
+          
+            <h3>GRAPHICAL USER INTERFACE</h3>
+          
+            <p>As far as the GUI is concerned, if we consider</p>
+          
+            <ul>
+                <li><strong>Splash Screen</strong> - The Splash Screen GUI will consist of the game logo as the background of the startup screen with Text that says "Click to Start". </li>
+                <img src="GUI images/Splash Screen.png" alt="Splash Screen" width= "400" height="250"/>
+            <br />
+          
+                <li><strong>Main Menu</strong> - The Main menu GUI will show after the Splash Screen is clicked. The main menu will have 4 buttons:
+                <ul>
+                    <li><strong>Start</strong> - Pressing this button will start the game</li>
+                    <li><strong>Controls</strong> - Pressing this button will move to the Controls Screen GUI</li>
+                    <li><strong>Display Controls</strong> - If pressed, the game will display an info screen that includes a description of all game controls.</li>
+                    <li><strong>Help</strong> - Pressing this button will change the viewport to the Help Screen GUI</li>
+                    <li><strong>Level Selection</strong> - Pressing this button will change the viewport to the Level Selection Screen GUI</li>
+                </ul></li>
+                <img src="GUI images/Main Menu.png" alt="Main Menu" width= "400" height="250"/>
+            <br />
+          
+                <li><strong>Level Selection Screen</strong> - The Level Selection Screen GUI will have 3 options:
+                <ul>
+                    <li><strong>Floor 1</strong> - Choosing this option brings you to level 1</li>
+                    <li><strong>Floor 2</strong> - Choosing this option brings you to level 2</li>
+                    <li><strong>Floor 3</strong> - Choosing this option brings you to level 3</li>
+                </ul>
+                <img src="GUI images/Levels Selection Screen.png" alt="Levles Selection Screen" width= "400" height="250"/>
+
+                <li><strong>Controls Screen</strong> - The Controls Screen GUI will show the controls of the game and also has a back-to-the-main menu option that returns to the main menu screen.</li>
+                <img src="GUI images/Controls Screen.png" alt="Controls Screen" width= "400" height="250"/>
+
+                <li><strong>Help Screen</strong> - The Help Screen GUI gives a description of the backstory of the game, the name of the developers, and the cheat codes that can be used. There is also a back-to-the-main menu option that returns to the main menu screen.</li>
+                <ul>
+                    <li><strong>Cheat codes</strong> - gotolvl1(player teleports to first level), gotolvl2(player teleports to the second level), gotolvl3(player teleports to third level), maxmoney(player gains the max amount of money), godmode(player can no longer die).</li>
+                </ul>
+                <img src="GUI images/Help Screen.png" alt="Help Screen" width= "400" height="250"/>
+
+                <li><strong>In-Game Screen</strong> - The In-Game Screen will display the player inside a room that will fill the entire game port. On each edge of the room, there is a door that will bring you to another room. At the top left of the screen, there is a health bar display that shows the player's current health points. Also, at the top right of the screen, there is a pause icon that can be clicked to pause the game, you can also click ESC to pause the game as well.</li>
+                <img src="GUI images/In-Game Screen.png" alt="In-Game Screen" width= "400" height="250"/>
+
+                <li><strong>Paused Screen</strong> - The Pause Screen GUI has 4 options:</li>
+                <ul>
+                    <li><strong>Resume</strong> - This option resumes the game</li>
+                    <li><strong>Controls Screen</strong> - This option display the Controls screen</li>
+                    <li><strong>Help Screen</strong> - This option displays the Help Screen</li>
+                    <li><strong>Return to the Main Menu</strong> - This option returns you to the main menu screen</li>
+                </ul>
+                <img src="GUI images/Paused Screen.png" alt="Paused Screen" width= "400" height="250"/>
+
+            </ul>
+            <br />
+          
+            <h3>ARTWORK</h3>
+          
+            <p>All of the following artwork will be original however some of the enemies and bosses will be taken from sprites made by other students on the CSE380 website. The following needs to be created:
+            </p>
+          
+            <ul>
+             <li>Good Guy Lukas, Enemies and Bosses:
+              <ul>
+               <li>Idle</li>
+               <li>Running</li>
+               <li>Attacking</li>
+               <li>Taking Damage</li>
+               <li>Dying</li>
+               <li>Dead</li>
+              </ul></li>
+              <p>Floor, Wall, and Door Tiles- The enemy rooms, item rooms, and boss rooms will have tilemaps with these floor and collidable wall and door tiles.
+            </p>
+            <br />
+          
+          
+            <h3>SOUND EFFECTS</h3>
+          
+            <p>All sound effects will be original. Sounds must be made to coincide with each of the following events:</p>
+             <ul>
+              <li><strong>Player/Enemy/Boss Walking</strong></li>
+              <li><strong>Player/Enemy/Boss taking damage</strong></li>
+              <li><strong>Player/Enemy/Boss dying</strong></li>
+              <li><strong>Player/Enemy/Boss Attacking</strong></li>
+              <li><strong>Purchase Item Sound Effect</strong></li>
+             </ul>
+            <br />
+          
+            <h3>MUSIC</h3>
+          
+            <p>Game Music will be added when time permits.</p>
+            <br />
+            
+            <h3>LORE</h3>
+            <p>One each floor you will find a shop room where one of the three Smith Bros is selling weapons. They will sell the weapons to you at a discounted price because they got fired by the BGC.</p>
+            <br />
+             
+          <hr />
+          
+          <p style="font-size:9pt; text-align:center;">
+          Copied from the web page created and maintained<br />
+          by <a href="http://www.cs.sunysb.edu/~richard">Richard McKenna</a></p>
+          
+          <p><br /></p>
+          </div>
+    </body>
+
+</html>
