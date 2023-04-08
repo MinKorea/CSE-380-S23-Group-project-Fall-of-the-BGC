@@ -43,7 +43,7 @@ const BattlerGroups = {
 export default class MainHW4Scene extends HW4Scene {
 
     /** GameSystems in the HW3 Scene */
-    private inventoryHud: InventoryHUD;
+    // private inventoryHud: InventoryHUD;
 
     /** All the battlers in the HW3Scene (including the player) */
     private battlers: (Battler & Actor)[];
@@ -86,7 +86,7 @@ export default class MainHW4Scene extends HW4Scene {
         this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/RedHealer.json");
 
         // Load the tilemap
-        this.load.tilemap("level", "hw4_assets/tilemaps/HW3Tilemap.json");
+        this.load.tilemap("level", "hw4_assets/tilemaps/Level1Tilemap.json");
 
         // Load the enemy locations
         this.load.object("red", "hw4_assets/data/enemies/red.json");
@@ -148,7 +148,7 @@ export default class MainHW4Scene extends HW4Scene {
         while (this.receiver.hasNextEvent()) {
             this.handleEvent(this.receiver.getNextEvent());
         }
-        this.inventoryHud.update(deltaT);
+        // this.inventoryHud.update(deltaT);
         this.healthbars.forEach(healthbar => healthbar.update(deltaT));
     }
 
@@ -224,19 +224,19 @@ export default class MainHW4Scene extends HW4Scene {
         player.maxHealth = 10;
 
         player.inventory.onChange = ItemEvent.INVENTORY_CHANGED
-        this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
-            start: new Vec2(232, 24),
-            slotLayer: "slots",
-            padding: 8,
-            itemLayer: "items"
-        });
+        // this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
+        //     start: new Vec2(232, 24),
+        //     slotLayer: "slots",
+        //     padding: 8,
+        //     itemLayer: "items"
+        // });
 
         // Give the player physics
         player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
 
         // Give the player a healthbar
-        let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(2, 1/2), offset: player.size.clone().scaled(0, -1/2)});
-        this.healthbars.set(player.id, healthbar);
+        // let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(2, 1/2), offset: player.size.clone().scaled(0, -1/2)});
+        // this.healthbars.set(player.id, healthbar);
 
         // Give the player PlayerAI
         player.addAI(PlayerAI);
@@ -246,6 +246,8 @@ export default class MainHW4Scene extends HW4Scene {
 
         this.battlers.push(player);
         this.viewport.follow(player);
+        this.viewport.setZoomLevel(1);
+        
     }
     /**
      * Initialize the NPCs 
