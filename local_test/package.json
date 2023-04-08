@@ -1,0 +1,33 @@
+{
+  "name": "wolfie2d",
+  "version": "1.0.0",
+  "description": "A game engine written in TypeScript",
+  "main": "./dist/main.js",
+  "scripts": {
+    "test": "jest --verbose=false --noStackTrace --passWithNoTests",
+    "build": "gulp build"
+  },
+  "author": "Joe Weaver",
+  "license": "ISC",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.5.1",
+    "@types/seed-random": "^2.2.1",
+    "browserify": "^16.5.1",
+    "fancy-log": "^1.3.3",
+    "gulp": "^4.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.2",
+    "tsify": "^5.0.0",
+    "typescript": "^4.7.4",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "seed-random": "^2.2.0"
+  }
+}
