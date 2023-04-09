@@ -222,6 +222,7 @@ export default class MainHW4Scene extends HW4Scene {
 
         player.health = 10;
         player.maxHealth = 10;
+        player.scale = new Vec2(5, 5); // Scales player 
 
         player.inventory.onChange = ItemEvent.INVENTORY_CHANGED
         // this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
