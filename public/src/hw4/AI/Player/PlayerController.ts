@@ -1,6 +1,13 @@
 import Vec2 from "../../../Wolfie2D/DataTypes/Vec2";
 import Input from "../../../Wolfie2D/Input/Input";
 import AnimatedSprite from "../../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import Particle from "../../../Wolfie2D/Nodes/Graphics/Particle";
+import ParticleSystem from "../../../Wolfie2D/Rendering/Animations/ParticleSystem";
+import Scene from "../../../Wolfie2D/Scene/Scene";
+import Color from "../../../Wolfie2D/Utils/Color";
+import { EaseFunctionType } from "../../../Wolfie2D/Utils/EaseFunctions";
+import RandUtils from "../../../Wolfie2D/Utils/RandUtils";
+import { HW3PhysicsGroups } from "./HW3PhysicsGroups";
 
 /**
  * Strings used in the key binding for the player
@@ -36,7 +43,7 @@ export default class PlayerController {
         let dir: Vec2 = Vec2.ZERO;
         dir.y = (Input.isPressed(PlayerInput.MOVE_UP) ? -1 : 0) + (Input.isPressed(PlayerInput.MOVE_DOWN) ? 1 : 0);
 		dir.x = (Input.isPressed(PlayerInput.MOVE_LEFT) ? -1 : 0) + (Input.isPressed(PlayerInput.MOVE_RIGHT) ? 1 : 0);
-        return dir.normalize();
+        return dir.normalize().scale(5);
     }
 
     /** 

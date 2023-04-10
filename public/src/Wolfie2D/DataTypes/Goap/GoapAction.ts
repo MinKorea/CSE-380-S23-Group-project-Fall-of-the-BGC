@@ -1,4 +1,4 @@
-import AI from "../Interfaces/AI";
+import AI from "../../../Wolfie2D/DataTypes/Interfaces/AI";
 
 export default interface GoapAction {
 

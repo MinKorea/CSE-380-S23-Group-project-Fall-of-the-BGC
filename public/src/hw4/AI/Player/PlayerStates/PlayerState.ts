@@ -1,5 +1,8 @@
+import Vec2 from "../../../../Wolfie2D/DataTypes/Vec2";
 import State from "../../../../Wolfie2D/DataTypes/State/State";
 import GameEvent from "../../../../Wolfie2D/Events/GameEvent";
+import PlayerWeapon from "../PlayerWeapon";
+import Input from "../../../../Wolfie2D/Input/Input";
 import { BattlerEvent, HudEvent, ItemEvent } from "../../../Events"
 import Item from "../../../GameSystems/ItemSystem/Item";
 import PlayerAI from "../PlayerAI";
@@ -22,6 +25,7 @@ export default abstract class PlayerState extends State {
 
     protected parent: PlayerAI;
     protected owner: PlayerActor;
+    protected weapon: PlayerWeapon;
 
     public constructor(parent: PlayerAI, owner: PlayerActor) {
         super(parent);
@@ -33,9 +37,18 @@ export default abstract class PlayerState extends State {
     public override update(deltaT: number): void {
 
         // Adjust the angle the player is facing 
-        this.parent.owner.rotation = this.parent.controller.rotation;
+        // this.parent.owner.rotation = this.parent.controller.rotation;
+        
+        // Update the rotation to apply the particles velocity vector
+        //this.weapon.rotation = 2*Math.PI - Vec2.UP.angleToCCW(this.parent.controller.faceDir) + Math.PI;
+
         // Move the player
         this.parent.owner.move(this.parent.controller.moveDir);
+
+        // if (this.parent.controller.moveDir.equals(Vec2.ZERO)) {
+        //     this.finished(PlayerStateType.IDLE);
+        // }
+
 
         // Handle the player trying to pick up an item
         if (this.parent.controller.pickingUp) {
