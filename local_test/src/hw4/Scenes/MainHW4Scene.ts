@@ -77,7 +77,7 @@ export default class MainHW4Scene extends HW4Scene {
      */
     public override loadScene() {
         // Load the player and enemy spritesheets
-        this.load.spritesheet("player1", "hw4_assets/spritesheets/player1.json");
+        this.load.spritesheet("player1", "hw4_assets/spritesheets/Warball_001_Lukas.json");
 
         // Load in the enemy sprites
         this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/BlueEnemy.json");
@@ -222,7 +222,7 @@ export default class MainHW4Scene extends HW4Scene {
 
         player.health = 10;
         player.maxHealth = 10;
-        player.scale = new Vec2(5, 5); // Scales player 
+        player.scale = new Vec2(1, 1); // Scales player 
 
         player.inventory.onChange = ItemEvent.INVENTORY_CHANGED
         // this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
@@ -236,8 +236,8 @@ export default class MainHW4Scene extends HW4Scene {
         player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
 
         // Give the player a healthbar
-        // let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(2, 1/2), offset: player.size.clone().scaled(0, -1/2)});
-        // this.healthbars.set(player.id, healthbar);
+        let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -2/3)});
+        this.healthbars.set(player.id, healthbar);
 
         // Give the player PlayerAI
         player.addAI(PlayerAI);
@@ -351,7 +351,6 @@ export default class MainHW4Scene extends HW4Scene {
             npc.animation.play("IDLE");
             this.battlers.push(npc);
         }
-
 
     }
 
