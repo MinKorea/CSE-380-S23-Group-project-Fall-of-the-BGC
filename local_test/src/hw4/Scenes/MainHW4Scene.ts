@@ -1,12 +1,15 @@
 import PositionGraph from "../../Wolfie2D/DataTypes/Graphs/PositionGraph";
 import Actor from "../../Wolfie2D/DataTypes/Interfaces/Actor";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
+import Shape from "../../Wolfie2D/DataTypes/Shapes/Shape";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Input from "../../Wolfie2D/Input/Input";
 import GameNode from "../../Wolfie2D/Nodes/GameNode";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import Line from "../../Wolfie2D/Nodes/Graphics/Line";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
+import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Navmesh from "../../Wolfie2D/Pathfinding/Navmesh";
 import DirectStrategy from "../../Wolfie2D/Pathfinding/Strategies/DirectStrategy";
 import RenderingManager from "../../Wolfie2D/Rendering/RenderingManager";
@@ -20,6 +23,7 @@ import PlayerActor from "../Actors/PlayerActor";
 import GuardBehavior from "../AI/NPC/NPCBehavior/GaurdBehavior";
 import HealerBehavior from "../AI/NPC/NPCBehavior/HealerBehavior";
 import PlayerAI from "../AI/Player/PlayerAI";
+import PlayerController, { PlayerInput } from "../AI/Player/PlayerController";
 import { ItemEvent, PlayerEvent, BattlerEvent } from "../Events";
 import Battler from "../GameSystems/BattleSystem/Battler";
 import BattlerBase from "../GameSystems/BattleSystem/BattlerBase";
@@ -34,10 +38,18 @@ import BasicTargetable from "../GameSystems/Targeting/BasicTargetable";
 import Position from "../GameSystems/Targeting/Position";
 import AstarStrategy from "../Pathfinding/AstarStrategy";
 import HW4Scene from "./HW4Scene";
+import MainMenu from "./MainMenu";
 
 const BattlerGroups = {
     RED: 1,
     BLUE: 2
+} as const;
+
+export const MainSceneLayers = {
+	PRIMARY: "PRIMARY",
+	BACKGROUND: "BACKGROUND", 
+	UI: "UI",
+    PAUSE: "PAUSE"
 } as const;
 
 export default class MainHW4Scene extends HW4Scene {
@@ -76,14 +88,15 @@ export default class MainHW4Scene extends HW4Scene {
      * @see Scene.update()
      */
     public override loadScene() {
+
         // Load the player and enemy spritesheets
         this.load.spritesheet("player1", "hw4_assets/spritesheets/Warball_001_Lukas.json");
 
         // Load in the enemy sprites
-        this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/BlueEnemy.json");
-        this.load.spritesheet("RedEnemy", "hw4_assets/spritesheets/RedEnemy.json");
-        this.load.spritesheet("BlueHealer", "hw4_assets/spritesheets/BlueHealer.json");
-        this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/RedHealer.json");
+        this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/psyfly.json");
+        this.load.spritesheet("RedEnemy", "hw4_assets/spritesheets/Ball_Bat.json");
+        this.load.spritesheet("BlueHealer", "hw4_assets/spritesheets/psyfly.json");
+        this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/Ball_Bat.json");
 
         // Load the tilemap
         this.load.tilemap("level", "hw4_assets/tilemaps/Level1Tilemap.json");
@@ -105,6 +118,11 @@ export default class MainHW4Scene extends HW4Scene {
      * @see Scene.startScene
      */
     public override startScene() {
+        const center = this.viewport.getCenter();
+
+        this.addLayer(MainSceneLayers.UI, 5);
+        this.addLayer(MainSceneLayers.PAUSE, 5);
+
         // Add in the tilemap
         let tilemapLayers = this.add.tilemap("level");
 
@@ -136,10 +154,30 @@ export default class MainHW4Scene extends HW4Scene {
         // Add a UI for health
         this.addUILayer("health");
 
+        const pause = this.add.uiElement(UIElementType.BUTTON, MainSceneLayers.UI, {position: new Vec2(center.x + 600, center.y - 400), text: "Pause"});
+        pause.size.set(100, 50);
+        pause.borderWidth = 2;
+        pause.borderColor = Color.TRANSPARENT;
+        pause.backgroundColor = Color.TRANSPARENT;
+        pause.onClickEventId = "pause";
 
+        // const unpause = this.add.uiElement(UIElementType.BUTTON, MainSceneLayers.UI, {position: new Vec2(center.x, center.y), text: "Unpause"});
+        // unpause.size.set(100, 50);
+        // unpause.borderWidth = 2;
+        // unpause.borderColor = Color.TRANSPARENT;
+        // unpause.backgroundColor = Color.TRANSPARENT;
+        // unpause.onClickEventId = "unpause";
+
+        // let val = this.layers;
+
+        // console.log(val);
+        
         this.receiver.subscribe(PlayerEvent.PLAYER_KILLED);
         this.receiver.subscribe(BattlerEvent.BATTLER_KILLED);
         this.receiver.subscribe(BattlerEvent.BATTLER_RESPAWN);
+        this.receiver.subscribe("pause");
+        // this.receiver.subscribe("unpause");
+        
     }
     /**
      * @see Scene.updateScene
@@ -150,6 +188,7 @@ export default class MainHW4Scene extends HW4Scene {
         }
         // this.inventoryHud.update(deltaT);
         this.healthbars.forEach(healthbar => healthbar.update(deltaT));
+        
     }
 
     /**
@@ -167,6 +206,20 @@ export default class MainHW4Scene extends HW4Scene {
             }
             case ItemEvent.ITEM_REQUEST: {
                 this.handleItemRequest(event.data.get("node"), event.data.get("inventory"));
+                break;
+            }
+            case "pause": {
+                // this.setRunning(false);
+                // let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
+                // player.position.set(40, 40);
+                this.sceneManager.changeToScene(MainMenu);
+                break;
+            }
+            case "unpause": {
+                // this.setRunning(true);                
+                // let layer = this.getLayer("primary");
+                // layer.enable();
+                // this.sceneManager.changeToScene(MainMenu);
                 break;
             }
             default: {
@@ -216,8 +269,9 @@ export default class MainHW4Scene extends HW4Scene {
      * Initializes the player in the scene
      */
     protected initializePlayer(): void {
+        const center = this.viewport.getCenter();
         let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-        player.position.set(40, 40);
+        player.position.set(center.x, center.y);
         player.battleGroup = 2;
 
         player.health = 10;
@@ -246,7 +300,7 @@ export default class MainHW4Scene extends HW4Scene {
         player.animation.play("IDLE");
 
         this.battlers.push(player);
-        this.viewport.follow(player);
+        // this.viewport.follow(player);
         this.viewport.setZoomLevel(1);
         
     }
@@ -269,9 +323,10 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 10;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
+            // npc.scale = new Vec2(1,1);
 
             // Give the NPC a healthbar
-            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/2), offset: npc.size.clone().scaled(0, -1/2)});
+            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
             this.healthbars.set(npc.id, healthbar);
 
             npc.addAI(HealerBehavior);
@@ -285,7 +340,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
 
             // Give the NPC a healthbar
-            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/2), offset: npc.size.clone().scaled(0, -1/2)});
+            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
             this.healthbars.set(npc.id, healthbar);
             
             // Set the NPCs stats
@@ -294,6 +349,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 1;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
+            // npc.scale = new Vec2(3,3);
 
             npc.addAI(GuardBehavior, {target: new BasicTargetable(new Position(npc.position.x, npc.position.y)), range: 100});
 
@@ -313,7 +369,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(7, 7)), null, false);
 
             // Give the NPCS their healthbars
-            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/2), offset: npc.size.clone().scaled(0, -1/2)});
+            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
             this.healthbars.set(npc.id, healthbar);
 
             npc.battleGroup = 2
@@ -321,6 +377,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 1;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
+            npc.scale = new Vec2(1,1);
 
             // Give the NPCs their AI
             npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
@@ -343,8 +400,9 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 1;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
+            npc.scale = new Vec2(1,1);
 
-            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/2), offset: npc.size.clone().scaled(0, -1/2)});
+            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
             this.healthbars.set(npc.id, healthbar);
 
             npc.addAI(HealerBehavior);
