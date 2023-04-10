@@ -1,5 +1,4 @@
 import Particle from "../../../Wolfie2D/Nodes/Graphics/Particle";
-//import Particle from "../../../Wolfie2D/Nodes/Graphics/Particle";
 import ParticleSystem from "../../../Wolfie2D/Rendering/Animations/ParticleSystem";
 import Scene from "../../../Wolfie2D/Scene/Scene";
 import Color from "../../../Wolfie2D/Utils/Color";

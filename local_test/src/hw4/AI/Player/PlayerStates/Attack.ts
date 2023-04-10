@@ -34,7 +34,7 @@ export default class Attack extends PlayerState {
         this.weapon.rotation = 2*Math.PI - Vec2.UP.angleToCCW(this.faceDir) + Math.PI;
 
         // If the player hits the attack button and the weapon system isn't running, restart the system and fire!
-        if (Input.isPressed(" ") && !this.weapon.isSystemRunning()) {
+        if (Input.isKeyJustPressed("space") && !this.weapon.isSystemRunning()) {
 
             if(this.faceDir.x < 0)  this.owner.animation.playIfNotAlready("ATTACKING_LEFT");
             else                    this.owner.animation.playIfNotAlready("ATTACKING_RIGHT");
