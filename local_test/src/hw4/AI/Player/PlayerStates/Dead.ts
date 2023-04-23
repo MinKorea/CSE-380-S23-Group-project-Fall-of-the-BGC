@@ -13,6 +13,8 @@ export default class Dead extends PlayerState {
      * that the player is officially dead.
      */
     onEnter(options: Record<string, any>): void {
+        this.parent.owner.animation.playIfNotAlready("DYING",false, "DEAD");
+        
         this.emitter.fireEvent(PlayerEvent.PLAYER_KILLED);
     }
 
