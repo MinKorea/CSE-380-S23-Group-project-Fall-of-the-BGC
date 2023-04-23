@@ -318,7 +318,7 @@ export default class MainHW4Scene extends HW4Scene {
         player.animation.play("IDLE");
         
         this.battlers.push(player);
-        // this.viewport.follow(player);
+        this.viewport.follow(player);
         this.viewport.setZoomLevel(1);
         
     }
