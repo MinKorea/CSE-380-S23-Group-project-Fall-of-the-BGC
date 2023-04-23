@@ -49,6 +49,12 @@ export default abstract class PlayerState extends State {
         //     this.finished(PlayerStateType.IDLE);
         // }
 
+        if(this.parent.owner.health <= 0)
+        {
+            this.parent.owner.animation.playIfNotAlready("DYING",false, "DEAD");
+            this.finished(PlayerStateType.DEAD);
+        }
+                       
 
         // Handle the player trying to pick up an item
         if (this.parent.controller.pickingUp) {

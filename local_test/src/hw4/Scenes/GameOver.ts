@@ -15,4 +15,6 @@ export default class GameOver extends Scene {
         const gameOver = <Label>this.add.uiElement(UIElementType.LABEL, "primary", {position: new Vec2(center.x, center.y), text: "Game Over"});
         gameOver.textColor = Color.WHITE;
     }
+
+    
 }
