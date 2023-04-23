@@ -122,7 +122,9 @@ export default class MainHW4Scene extends HW4Scene {
     public override startScene() {
         const center = this.viewport.getCenter();
 
-        this.addLayer(MainSceneLayers.UI, 5);
+        
+
+        this.addLayer(MainSceneLayers.UI, );
         this.addLayer(MainSceneLayers.PAUSE, 5);
 
         // Add in the tilemap
@@ -135,9 +137,7 @@ export default class MainHW4Scene extends HW4Scene {
         let tilemapSize: Vec2 = this.walls.size;
 
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-
-        
-
+    
 
         this.initLayers();
         
@@ -155,6 +155,8 @@ export default class MainHW4Scene extends HW4Scene {
         this.receiver.subscribe("enemyDied");
         this.receiver.subscribe(ItemEvent.ITEM_REQUEST);
 
+    
+
         // Add a UI for health
         this.addUILayer("health");
 
@@ -164,6 +166,8 @@ export default class MainHW4Scene extends HW4Scene {
         pause.borderColor = Color.TRANSPARENT;
         pause.backgroundColor = Color.TRANSPARENT;
         pause.onClickEventId = "pause";
+        
+        
 
         // const unpause = this.add.uiElement(UIElementType.BUTTON, MainSceneLayers.UI, {position: new Vec2(center.x, center.y), text: "Unpause"});
         // unpause.size.set(100, 50);
@@ -283,7 +287,7 @@ export default class MainHW4Scene extends HW4Scene {
     protected initializePlayer(): void {
         const center = this.viewport.getCenter();
         let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-        player.position.set(center.x, center.y + 3700);
+        player.position.set(center.x, center.y);
 
         player.battleGroup = 2;
         
@@ -314,7 +318,7 @@ export default class MainHW4Scene extends HW4Scene {
         player.animation.play("IDLE");
         
         this.battlers.push(player);
-        this.viewport.follow(player);
+        // this.viewport.follow(player);
         this.viewport.setZoomLevel(1);
         
     }
