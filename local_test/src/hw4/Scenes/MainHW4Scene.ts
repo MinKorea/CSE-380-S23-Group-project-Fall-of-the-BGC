@@ -90,6 +90,7 @@ export default class MainHW4Scene extends HW4Scene {
      */
     public override loadScene() {
 
+
         // Load the player and enemy spritesheets
         this.load.spritesheet("player1", "hw4_assets/spritesheets/Warball_001_Lukas.json");
 
@@ -134,7 +135,9 @@ export default class MainHW4Scene extends HW4Scene {
         let tilemapSize: Vec2 = this.walls.size;
 
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
-        this.viewport.setZoomLevel(2);
+
+        
+
 
         this.initLayers();
         
@@ -172,6 +175,8 @@ export default class MainHW4Scene extends HW4Scene {
         // let val = this.layers;
 
         // console.log(val);
+
+        // this.viewport.setZoomLevel(.5);
         
         this.receiver.subscribe(PlayerEvent.PLAYER_KILLED);
         this.receiver.subscribe(BattlerEvent.BATTLER_KILLED);
@@ -213,6 +218,9 @@ export default class MainHW4Scene extends HW4Scene {
                 this.sceneManager.changeToScene(GameOver);
             }
             case "pause": {
+                // let b = this.getBattlers()
+                let b = this.getBattlers();
+                
                 // this.setRunning(false);
                 // let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
                 // player.position.set(40, 40);
@@ -275,8 +283,10 @@ export default class MainHW4Scene extends HW4Scene {
     protected initializePlayer(): void {
         const center = this.viewport.getCenter();
         let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-        player.position.set(center.x, center.y);
+        player.position.set(center.x, center.y + 3700);
+
         player.battleGroup = 2;
+        
 
         player.health = 10;
         player.maxHealth = 10;
@@ -291,7 +301,7 @@ export default class MainHW4Scene extends HW4Scene {
         // });
 
         // Give the player physics
-        player.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)));
+        player.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 64)));
 
         // Give the player a healthbar
         let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -2/3)});
@@ -302,9 +312,9 @@ export default class MainHW4Scene extends HW4Scene {
 
         // Start the player in the "IDLE" animation
         player.animation.play("IDLE");
-
+        
         this.battlers.push(player);
-        // this.viewport.follow(player);
+        this.viewport.follow(player);
         this.viewport.setZoomLevel(1);
         
     }
@@ -321,6 +331,7 @@ export default class MainHW4Scene extends HW4Scene {
             let npc = this.add.animatedSprite(NPCActor, "RedHealer", "primary");
             npc.position.set(red.healers[i][0], red.healers[i][1]);
             npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+            
 
             npc.battleGroup = 1;
             npc.speed = 10;
@@ -329,7 +340,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.navkey = "navmesh";
             // npc.scale = new Vec2(1,1);
 
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 1000});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
             // npc.moveOnPath(npc.speed, npc.getPath(this.battlers[0].position, npc.position));
 
             // Give the NPC a healthbar
@@ -360,7 +371,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.navkey = "navmesh";
             // npc.scale = new Vec2(3,3);
 
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 1000});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
 
             // npc.moveOnPath(npc.speed, npc.getPath(this.battlers[0].position, npc.position));
 
@@ -393,7 +404,7 @@ export default class MainHW4Scene extends HW4Scene {
             
 
             // Give the NPCs their AI
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 1000});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
 
             // Play the NPCs "IDLE" animation 
             npc.animation.play("IDLE");
@@ -416,7 +427,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.scale = new Vec2(1,1);
 
             // npc.getPath(this.playerPos, npc.position);
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 1000});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
 
             let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
             this.healthbars.set(npc.id, healthbar);
