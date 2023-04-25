@@ -101,7 +101,7 @@ export default class MainHW4Scene extends HW4Scene {
         this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/Ball_Bat.json");
 
         // Load the tilemap
-        this.load.tilemap("level", "hw4_assets/tilemaps/Level1Tilemap.json");
+        this.load.tilemap("level", "hw4_assets/tilemaps/BGCTilemap.json");
 
         // Load the enemy locations
         this.load.object("red", "hw4_assets/data/enemies/red.json");
@@ -180,7 +180,7 @@ export default class MainHW4Scene extends HW4Scene {
 
         // console.log(val);
 
-        // this.viewport.setZoomLevel(.5);
+        this.viewport.setZoomLevel(3);
         
         this.receiver.subscribe(PlayerEvent.PLAYER_KILLED);
         this.receiver.subscribe(BattlerEvent.BATTLER_KILLED);
@@ -287,14 +287,14 @@ export default class MainHW4Scene extends HW4Scene {
     protected initializePlayer(): void {
         const center = this.viewport.getCenter();
         let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-        player.position.set(center.x, center.y);
+        player.position.set(center.x-300, center.y+300);
 
         player.battleGroup = 2;
         
 
         player.health = 10;
         player.maxHealth = 10;
-        player.scale = new Vec2(1, 1); // Scales player 
+        player.scale = new Vec2(0.4, 0.4); // Scales player 
 
         player.inventory.onChange = ItemEvent.INVENTORY_CHANGED
         // this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
@@ -305,7 +305,7 @@ export default class MainHW4Scene extends HW4Scene {
         // });
 
         // Give the player physics
-        player.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 64)));
+        player.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
 
         // Give the player a healthbar
         let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -2/3)});
@@ -334,7 +334,7 @@ export default class MainHW4Scene extends HW4Scene {
         for (let i = 0; i < red.healers.length; i++) {
             let npc = this.add.animatedSprite(NPCActor, "RedHealer", "primary");
             npc.position.set(red.healers[i][0], red.healers[i][1]);
-            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)), null, false);
             
 
             npc.battleGroup = 1;
@@ -403,7 +403,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 10;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
-            npc.scale = new Vec2(1,1);
+            npc.scale = new Vec2(0.4,0.4);
 
             
 
@@ -428,7 +428,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 10;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
-            npc.scale = new Vec2(1,1);
+            npc.scale = new Vec2(0.4,0.4);
 
             // npc.getPath(this.playerPos, npc.position);
             npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
