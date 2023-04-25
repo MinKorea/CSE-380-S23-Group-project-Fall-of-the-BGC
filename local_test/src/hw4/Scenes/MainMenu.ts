@@ -38,7 +38,17 @@ export default class MainMenu extends Scene {
     }
 
     public startScene(){
+        // let a = new Vec2(660,440);
+        // this.viewport.setCenter(a);
+        // const center = a;
+
+        // console.log(center);
+        
         const center = this.viewport.getCenter();
+
+        // this.viewport.setCenter(center);
+        // let a = new Vec2(660,440)
+        // this.viewport.setCenter(660, 440);
 
         this.addLayer(MainMenuLayers.BACKGROUND, 0);
 		this.initBackground();
@@ -90,9 +100,12 @@ export default class MainMenu extends Scene {
     }
 
     protected initBackground(): void {
+        const center = this.viewport.getCenter();
+
 		this.bg1 = this.add.sprite(MainMenu.BACKGROUND_KEY, MainMenuLayers.BACKGROUND);
 		// this.bg1.scale.set(1, 1.15);
-		this.bg1.position.copy(this.viewport.getCenter());
+        // this.viewport.setCenter(660, 440);
+		this.bg1.position.copy(center);
 
         // this.bg2 = this.add.sprite(SplashScreen.BACKGROUND_KEY, SplashScreenLayers.BACKGROUND);
 		// this.bg2.scale.set(1.5, 1.5);
