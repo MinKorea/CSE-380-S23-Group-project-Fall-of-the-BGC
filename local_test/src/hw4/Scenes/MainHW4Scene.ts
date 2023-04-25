@@ -358,6 +358,7 @@ export default class MainHW4Scene extends HW4Scene {
                 for(let i = 0; i < this.enemies.length; i++){ // Freezes enemies 
                     this.enemies[i].freeze();
                     this.enemies[i].disablePhysics();
+                    this.enemies[i].aiActive = false;
                     // this.enemies[i].clearTarget(); 
                     // TODO Stop enemy from attacking while paused
                 }
@@ -383,6 +384,7 @@ export default class MainHW4Scene extends HW4Scene {
                 for(let i = 0; i < this.enemies.length; i++){
                     this.enemies[i].unfreeze();
                     this.enemies[i].enablePhysics();
+                    this.enemies[i].aiActive = true;
                     // this.enemies[i].setTarget(this.battlers[0]);
                 }
 
@@ -394,6 +396,7 @@ export default class MainHW4Scene extends HW4Scene {
                 break;
             } 
             case "mainmenu": {
+                this.viewport.follow(undefined);
                 this.sceneManager.changeToScene(MainMenu);
                 break;
             } 
