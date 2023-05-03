@@ -38,8 +38,10 @@ export default class MainMenu extends Scene {
     }
 
     public startScene(){
-        // let a = new Vec2(660,440);
-        // this.viewport.setCenter(a);
+        console.log(this.viewport.getCenter());
+        
+        let a = new Vec2(660,440);
+        this.viewport.setCenter(a);
         // const center = a;
 
         // console.log(center);
