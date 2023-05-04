@@ -44,6 +44,7 @@ import AstarStrategy from "../Pathfinding/AstarStrategy";
 import GameOver from "./GameOver";
 import HW4Scene from "./HW4Scene";
 import MainMenu from "./MainMenu";
+import LevelSelectionScene from "./LevelSelectionScene";
 
 const BattlerGroups = {
     RED: 1,
@@ -71,6 +72,8 @@ export default class MainHW4Scene extends HW4Scene {
 
     private player: (PlayerActor)[];
     private enemies: (NPCActor)[];
+
+    protected boss: NPCActor;
     
     // private pause: (PauseHUD);
 
@@ -325,6 +328,11 @@ export default class MainHW4Scene extends HW4Scene {
             let v = new GameEvent("pause", null);
             this.handleEvent(v);
         }
+        if (this.boss.health <= 0) {
+            this.sceneManager.changeToScene(LevelSelectionScene);
+            this.viewport.setZoomLevel(1);
+        }
+        //if (npc)
     }
 
     /**
@@ -567,7 +575,7 @@ export default class MainHW4Scene extends HW4Scene {
         this.battlers.push(player);
         this.player.push(player);
         this.viewport.follow(player);
-        this.viewport.setZoomLevel(1);
+        this.viewport.setZoomLevel(3);
         
     }
     /**
@@ -641,7 +649,7 @@ export default class MainHW4Scene extends HW4Scene {
         for (let i = 0; i < blue.enemies.length; i++) {
             let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
             npc.position.set(blue.enemies[i][0], blue.enemies[i][1]);
-            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(12, 12)), null, false);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(14, 14)), null, false);
 
             // Give the NPCS their healthbars
             let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
@@ -654,8 +662,6 @@ export default class MainHW4Scene extends HW4Scene {
             npc.navkey = "navmesh";
             npc.scale = new Vec2(0.4,0.4);
 
-            
-
             // Give the NPCs their AI
             npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
 
@@ -667,7 +673,8 @@ export default class MainHW4Scene extends HW4Scene {
         }
 
         let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
-            npc.position.set(100,100);
+            this.boss = npc;
+            npc.position.set(900,100);
             npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
 
             // Give the NPCS their healthbars
@@ -676,12 +683,11 @@ export default class MainHW4Scene extends HW4Scene {
 
             npc.battleGroup = 1
             npc.speed = 10;
-            npc.health = 10;
-            npc.maxHealth = 10;
+            npc.health = 50;
+            npc.maxHealth = 50;
             npc.navkey = "navmesh";
             npc.scale = new Vec2(1,1);
 
-            
 
             // Give the NPCs their AI
             npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
