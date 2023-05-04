@@ -641,7 +641,7 @@ export default class MainHW4Scene extends HW4Scene {
         for (let i = 0; i < blue.enemies.length; i++) {
             let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
             npc.position.set(blue.enemies[i][0], blue.enemies[i][1]);
-            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(12, 12)), null, false);
 
             // Give the NPCS their healthbars
             let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
@@ -665,6 +665,32 @@ export default class MainHW4Scene extends HW4Scene {
             this.battlers.push(npc);
             this.enemies.push(npc);
         }
+
+        let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
+            npc.position.set(100,100);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+
+            // Give the NPCS their healthbars
+            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+            this.healthbars.set(npc.id, healthbar);
+
+            npc.battleGroup = 1
+            npc.speed = 10;
+            npc.health = 10;
+            npc.maxHealth = 10;
+            npc.navkey = "navmesh";
+            npc.scale = new Vec2(1,1);
+
+            
+
+            // Give the NPCs their AI
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
+
+            // Play the NPCs "IDLE" animation 
+            npc.animation.play("IDLE");
+
+            this.battlers.push(npc);
+            this.enemies.push(npc);
 
         // Initialize the blue healers
         for (let i = 0; i < blue.healers.length; i++) {
@@ -819,7 +845,7 @@ export default class MainHW4Scene extends HW4Scene {
                     let tilePos = new Vec2(col * tileSize.x + tileSize.x / 2, row * tileSize.y + tileSize.y / 2);
 
                     // Create a collider for this tile
-                    let collider = new AABB(tilePos, tileSize.scaled(1 / 2));
+                    let collider = new AABB(tilePos, tileSize.scaled(1/4));
 
                     let hit = collider.intersectSegment(start, delta, Vec2.ZERO);
 
