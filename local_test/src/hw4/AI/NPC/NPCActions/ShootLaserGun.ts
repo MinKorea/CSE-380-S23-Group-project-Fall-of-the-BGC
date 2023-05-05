@@ -34,10 +34,11 @@ export default class ShootLaserGun extends NPCAction {
 
             // Play the shooting animation for the laser gun
             this.lasergun.playShootAnimation();
-
+            
             // Send a laser fired event
             this.emitter.fireEvent(ItemEvent.LASERGUN_FIRED, {
                 actorId: this.actor.id,
+                battlerId: this.actor.battleGroup,
                 to: this.lasergun.laserStart.clone(), 
                 from: this.lasergun.laserEnd.clone().sub(this.lasergun.laserStart)
             });

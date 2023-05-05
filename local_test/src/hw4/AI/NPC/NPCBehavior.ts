@@ -35,7 +35,7 @@ export default abstract class NPCBehavior extends StateMachineGoapAI<NPCAction> 
         switch(event.type) {
             case ItemEvent.LASERGUN_FIRED: {
                 console.log("Catching and handling lasergun fired event!!!");
-                this.handleLasergunFired(event.data.get("actorId"), event.data.get("to"), event.data.get("from"));
+                this.handleLasergunFired(event.data.get("actorId"), event.data.get("battlerId"), event.data.get("to"), event.data.get("from"));
                 break;
             }
             default: {
@@ -45,8 +45,8 @@ export default abstract class NPCBehavior extends StateMachineGoapAI<NPCAction> 
         }
     }
 
-    protected handleLasergunFired(actorId: number, to: Vec2, from: Vec2): void {
-        if (actorId !== this.owner.id) {
+    protected handleLasergunFired(actorId: number, battlerId: number, to: Vec2, from: Vec2): void {
+        if (actorId !== this.owner.id && battlerId !== this.owner.battleGroup) {
             this.owner.health -= this.owner.collisionShape.getBoundingRect().intersectSegment(to, from) ? 1 : 0;
         }
     }

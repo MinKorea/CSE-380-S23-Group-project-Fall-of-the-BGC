@@ -590,7 +590,7 @@ export default class MainHW4Scene extends HW4Scene {
         for (let i = 0; i < red.healers.length; i++) {
             let npc = this.add.animatedSprite(NPCActor, "RedHealer", "primary");
             npc.position.set(red.healers[i][0], red.healers[i][1]);
-            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)), null, false);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
             
             
 
@@ -649,7 +649,7 @@ export default class MainHW4Scene extends HW4Scene {
         for (let i = 0; i < blue.enemies.length; i++) {
             let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
             npc.position.set(blue.enemies[i][0], blue.enemies[i][1]);
-            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(14, 14)), null, false);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
 
             // Give the NPCS their healthbars
             let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
