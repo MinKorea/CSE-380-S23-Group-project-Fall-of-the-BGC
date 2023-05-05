@@ -18,6 +18,8 @@ export default class GameOver extends Scene {
     startScene() {
         const center = this.viewport.getCenter();
 
+        this.viewport.setZoomLevel(1);
+
         this.addUILayer("primary");
 
         const gameOver = <Label>this.add.uiElement(UIElementType.BUTTON, "primary", {position: new Vec2(center.x, center.y), text: "Game Over"});

@@ -220,7 +220,7 @@ export default class MainHW4Scene extends HW4Scene {
 
         this.pauseImage = this.add.sprite(MainHW4Scene.PAUSE_KEY, pauseLayer.getName());
         this.pauseImage.position.copy(this.viewport.getCenter());
-        this.pauseImage.alpha = 0.7;
+        // this.pauseImage.alpha = 0.7;
 
         const unpause = this.add.uiElement(UIElementType.BUTTON, MainSceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 200), text: ""});
         unpause.size.set(400, 100);
@@ -324,6 +324,8 @@ export default class MainHW4Scene extends HW4Scene {
         // this.pause.update(deltaT);
     
         if (Input.isKeyJustPressed("escape")){
+        
+
             console.log("Escape pressed");
             let v = new GameEvent("pause", null);
             this.handleEvent(v);
@@ -332,6 +334,13 @@ export default class MainHW4Scene extends HW4Scene {
             this.sceneManager.changeToScene(LevelSelectionScene);
             this.viewport.setZoomLevel(1);
         }
+        let pauseLayer = this.getLayer("PAUSE");
+       
+        if(!pauseLayer.isHidden()){
+            this.pauseImage.position.copy(this.viewport.getCenter()); // Works but when moving the screen gets moved upwards.
+        }
+
+        
         //if (npc)
     }
 
@@ -353,12 +362,20 @@ export default class MainHW4Scene extends HW4Scene {
                 break;
             }
             case PlayerEvent.PLAYER_KILLED: {
+                this.viewport.follow(undefined);
                 this.sceneManager.changeToScene(GameOver);
             }
             case "pause": {
                 console.log("Pause");
 
+                // this.pauseImage.scale = this.pauseImage.sizeWithZoom;
+
+                this.viewport.setZoomLevel(1);
                 this.pauseImage.position.copy(this.viewport.getCenter()); // Works but when moving the screen gets moved upwards.
+                
+                
+                
+                // this.viewport.follow(undefined);
                 
                 this.player[0].freeze(); // Freezes player
                 this.player[0].disablePhysics();
@@ -381,6 +398,7 @@ export default class MainHW4Scene extends HW4Scene {
             case "unpause": {
                 console.log("unpause");
 
+                this.viewport.setZoomLevel(3);
                 let center = this.viewport.getCenter();
                 // this.pauseMenu.position.set(center.x, center.y);
                 
@@ -405,6 +423,7 @@ export default class MainHW4Scene extends HW4Scene {
             } 
             case "mainmenu": {
                 this.viewport.follow(undefined);
+                this.viewport.setZoomLevel(1);
                 this.sceneManager.changeToScene(MainMenu);
                 break;
             } 
