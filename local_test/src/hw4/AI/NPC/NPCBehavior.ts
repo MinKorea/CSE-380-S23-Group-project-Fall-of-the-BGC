@@ -1,6 +1,7 @@
 import StateMachineGoapAI from "../../../Wolfie2D/AI/Goap/StateMachineGoapAI";
 import Vec2 from "../../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../../Wolfie2D/Events/GameEvent";
+import { GameEventType } from "../../../Wolfie2D/Events/GameEventType";
 import GameNode from "../../../Wolfie2D/Nodes/GameNode";
 import Line from "../../../Wolfie2D/Nodes/Graphics/Line";
 import Timer from "../../../Wolfie2D/Timing/Timer";
@@ -14,6 +15,8 @@ import NPCAction from "./NPCActions/NPCAction";
  * NPCBehavior class should define some new behavior for an NPCActor. 
  */
 export default abstract class NPCBehavior extends StateMachineGoapAI<NPCAction>  {
+
+    
 
     protected override owner: NPCActor;
 
@@ -35,6 +38,8 @@ export default abstract class NPCBehavior extends StateMachineGoapAI<NPCAction> 
         switch(event.type) {
             case ItemEvent.LASERGUN_FIRED: {
                 console.log("Catching and handling lasergun fired event!!!");
+                // Enable to have every NPC have shoot audio
+                // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.owner.getScene().getShootAudioKey(), loop: false, holdReference: false});
                 this.handleLasergunFired(event.data.get("actorId"), event.data.get("battlerId"), event.data.get("to"), event.data.get("from"));
                 break;
             }

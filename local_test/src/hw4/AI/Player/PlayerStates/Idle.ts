@@ -13,6 +13,7 @@ import Circle from "../../../../Wolfie2D/DataTypes/Shapes/Circle";
 import MainHW4Scene from "../../../Scenes/MainHW4Scene";
 import Sprite from "../../../../Wolfie2D/Nodes/Sprites/Sprite";
 import OrthogonalTilemap from "../../../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
+import { GameEventType } from "../../../../Wolfie2D/Events/GameEventType";
 
 
 export default class Idle extends PlayerState {
@@ -73,6 +74,9 @@ export default class Idle extends PlayerState {
 
         // If the player hits the attack button and the weapon system isn't running, restart the system and fire!
         if (Input.isKeyJustPressed("space")) {
+            // Shoot Audio Played
+            this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.owner.getScene().getShootAudioKey(), loop: false, holdReference: false});
+        
             console.log("Space_pressed")
 
             let sprite = this.owner.getScene().add.sprite("laserGun", "primary");
