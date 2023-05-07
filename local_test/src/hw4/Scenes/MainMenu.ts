@@ -4,15 +4,17 @@ import Layer from "../../Wolfie2D/Scene/Layer";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
-import MainHW4Scene from "./MainHW4Scene";
+// import MainHW4Scene from "./MainHW4Scene";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
-import AstarDemoScene from "./AstarDemoScene";
-import GuardDemoScene from "./GuardDemoScene";
+// import AstarDemoScene from "./AstarDemoScene";
+// import GuardDemoScene from "./GuardDemoScene";
 import HelpScene from "./HelpScene";
 import ControlsScene from "./ControlsScene";
 import LevelSelectionScene from "./LevelSelectionScene";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import Input from "../../Wolfie2D/Input/Input";
+import testScene from "./Level1Scene";
+import Level1Scene from "./Level1Scene";
 
 export const MainMenuLayers = {
 	PRIMARY: "PRIMARY",
@@ -102,7 +104,7 @@ export default class MainMenu extends Scene {
         }
 
         if(Input.isKeyPressed("1")){
-            this.sceneManager.changeToScene(MainHW4Scene);
+            this.sceneManager.changeToScene(Level1Scene);
          }
     }
 
@@ -124,7 +126,7 @@ export default class MainMenu extends Scene {
     public handleEvent(event: GameEvent): void {
         switch(event.type) {
             case "play": {
-                this.sceneManager.changeToScene(MainHW4Scene);
+                this.sceneManager.changeToScene(Level1Scene);
                 break;
             }
             case "help": {

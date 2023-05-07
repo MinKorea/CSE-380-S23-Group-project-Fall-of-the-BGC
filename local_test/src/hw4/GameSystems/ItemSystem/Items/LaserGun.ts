@@ -8,7 +8,7 @@ import Sprite from "../../../../Wolfie2D/Nodes/Sprites/Sprite";
 import Scene from "../../../../Wolfie2D/Scene/Scene";
 import Color from "../../../../Wolfie2D/Utils/Color";
 import { EaseFunctionType } from "../../../../Wolfie2D/Utils/EaseFunctions";
-import HW4Scene from "../../../Scenes/HW4Scene";
+// import HW4Scene from "../../../Scenes/HW4Scene";
 import Item from "../Item";
 
 export default class LaserGun extends Item {

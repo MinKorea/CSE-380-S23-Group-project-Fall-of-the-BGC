@@ -10,7 +10,7 @@ import { GraphicType } from "../../../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import Line from "../../../../Wolfie2D/Nodes/Graphics/Line";
 import AABB from "../../../../Wolfie2D/DataTypes/Shapes/AABB";
 import Circle from "../../../../Wolfie2D/DataTypes/Shapes/Circle";
-import MainHW4Scene from "../../../Scenes/MainHW4Scene";
+// import MainHW4Scene from "../../../Scenes/MainHW4Scene";
 import Sprite from "../../../../Wolfie2D/Nodes/Sprites/Sprite";
 import OrthogonalTilemap from "../../../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import { GameEventType } from "../../../../Wolfie2D/Events/GameEventType";
