@@ -45,6 +45,7 @@ import GameOver from "./GameOver";
 import HW4Scene from "./HW4Scene";
 import MainMenu from "./MainMenu";
 import LevelSelectionScene from "./LevelSelectionScene";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 const BattlerGroups = {
     RED: 1,
@@ -91,6 +92,12 @@ export default class MainHW4Scene extends HW4Scene {
     public static CONTROLS_PATH = "hw4_assets/sprites/Controls-Screen.png"
     private controlsImage: Sprite;
 
+    public static SHOOT_AUDIO_KEY = "PLAYER_SHOOT"
+    public static SHOOT_AUDIO_PATH = "hw4_assets/sounds/laserShoot.wav"
+
+    //private zoomBool = false;
+
+    // protected shootAudioKey: string;
 
     private bases: BattlerBase[];
 
@@ -115,6 +122,8 @@ export default class MainHW4Scene extends HW4Scene {
 
         this.laserguns = new Array<LaserGun>();
         this.healthpacks = new Array<Healthpack>();
+
+        this.shootAudioKey = MainHW4Scene.SHOOT_AUDIO_KEY;
     }
 
     /**
@@ -150,6 +159,8 @@ export default class MainHW4Scene extends HW4Scene {
         this.load.image(MainHW4Scene.PAUSE_KEY, MainHW4Scene.PAUSE_PATH);
         this.load.image(MainHW4Scene.HELP_KEY, MainHW4Scene.HELP_PATH);
         this.load.image(MainHW4Scene.CONTROLS_KEY, MainHW4Scene.CONTROLS_PATH);
+
+        this.load.audio(this.shootAudioKey, MainHW4Scene.SHOOT_AUDIO_PATH);
 
     }
     /**
@@ -308,7 +319,7 @@ export default class MainHW4Scene extends HW4Scene {
         this.receiver.subscribe("backcontrols");
         this.receiver.subscribe("helpcontrols");
 
-        
+        // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
     }
     /**
      * @see Scene.updateScene
@@ -340,8 +351,22 @@ export default class MainHW4Scene extends HW4Scene {
             this.pauseImage.position.copy(this.viewport.getCenter()); // Works but when moving the screen gets moved upwards.
         }
 
+        if(Input.isKeyPressed("z")){
+                this.viewport.setZoomLevel(1);
+        }
         
-        //if (npc)
+        if(Input.isKeyPressed("x")){
+            this.viewport.setZoomLevel(3);
+         }
+
+
+        // Another way to play shoot audio is when player pressed space
+        //  if(Input.isKeyJustPressed("space")){
+        //     console.log("Shoot Audio Played");
+        //     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
+        //  }
+        // TODO If input is 2, 3, 4, 5, 6 go to those levels by chaning the scene
+
     }
 
     /**
@@ -363,7 +388,7 @@ export default class MainHW4Scene extends HW4Scene {
             }
             case PlayerEvent.PLAYER_KILLED: {
                 this.viewport.follow(undefined);
-                //this.sceneManager.changeToScene(GameOver);
+                this.sceneManager.changeToScene(GameOver);
             }
             case "pause": {
                 console.log("Pause");

@@ -1,9 +1,11 @@
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Input from "../../Wolfie2D/Input/Input";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
+import MainHW4Scene from "./MainHW4Scene";
 import MainMenu from "./MainMenu";
 
 export const ControlsSceneLayers = {
@@ -64,6 +66,10 @@ export default class ControlsScene extends Scene {
         while(this.receiver.hasNextEvent()){
             this.handleEvent(this.receiver.getNextEvent());
         }
+
+        if(Input.isKeyPressed("1")){
+            this.sceneManager.changeToScene(MainHW4Scene);
+         }
     }
 
     protected initBackground(): void {
