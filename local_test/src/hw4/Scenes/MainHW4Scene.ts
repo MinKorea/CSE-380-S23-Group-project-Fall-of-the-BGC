@@ -559,10 +559,11 @@ export default class MainHW4Scene extends HW4Scene {
         let id: number = event.data.get("id");
         let battler = this.battlers.find(b => b.id === id);
 
-        if (battler) {
-            battler.battlerActive = false;
-            this.healthbars.get(id).visible = false;
-        }
+        // if (battler) {
+        //     //wait 45 before removing the battler
+        //     battler.battlerActive = false;
+        //     this.healthbars.get(id).visible = false;
+        // }
         
     }
 

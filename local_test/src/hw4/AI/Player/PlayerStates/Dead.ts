@@ -14,7 +14,8 @@ export default class Dead extends PlayerState {
      */
     onEnter(options: Record<string, any>): void {
         //play dying animation
-        this.parent.owner.animation.play("DYING",false, "DEAD");
+        //this.parent.owner.animation.play("DYING",false, "DEAD");
+        //this.parent.owner.animation.play("DEAD",false, PlayerEvent.PLAYER_KILLED);
         this.emitter.fireEvent(PlayerEvent.PLAYER_KILLED);
     }
 
