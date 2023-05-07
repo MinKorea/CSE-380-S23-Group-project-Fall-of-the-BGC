@@ -363,7 +363,7 @@ export default class MainHW4Scene extends HW4Scene {
             }
             case PlayerEvent.PLAYER_KILLED: {
                 this.viewport.follow(undefined);
-                this.sceneManager.changeToScene(GameOver);
+                //this.sceneManager.changeToScene(GameOver);
             }
             case "pause": {
                 console.log("Pause");

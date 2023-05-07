@@ -48,24 +48,52 @@ export default class Moving extends PlayerState {
         //     //this.weapon.startSystem(500, 0, this.owner.position);
         // }
 
+        // if (Input.isKeyPressed("A") && Input.isKeyPressed("D")) {
+        //     this.owner.animation.play("IDLE")
+        // }
+        // else if (Input.isKeyPressed("A")) {
+        //     console.log("running left")
+        //     this.owner.animation.play("RUNNING_LEFT", true, "IDLE");
+        // }
+        // else if (Input.isKeyPressed("D")) {
+        //     console.log("running right")
+        //     this.owner.animation.play("RUNNING_RIGHT", true, "IDLE");
+        // }
+        if (this.parent.controller.moveDir.x < 0) {
+            this.owner.animation.playIfNotAlready("RUNNING_LEFT");
+        }
+        else if(this.parent.controller.moveDir.x > 0)
+        {
+            this.owner.animation.playIfNotAlready("RUNNING_RIGHT");
+        }
+        else
+        {
+            this.owner.animation.playIfNotAlready("IDLE");
+        }
+
+        if (this.parent.controller.moveDir.equals(Vec2.ZERO)) {
+            this.finished(PlayerStateType.IDLE);
+        }
+
+
         if (Input.isKeyJustPressed("space")) {
             console.log("Space_pressed")
 
-            if (this.parent.controller.moveDir.x < 0) {
-                this.owner.animation.playIfNotAlready("RUNNING_LEFT");
-            }
-            else if(this.parent.controller.moveDir.x > 0)
-            {
-                this.owner.animation.playIfNotAlready("RUNNING_RIGHT");
-            }
-            else
-            {
-                this.owner.animation.playIfNotAlready("IDLE");
-            }
+            // if (this.parent.controller.moveDir.x < 0) {
+            //     this.owner.animation.playIfNotAlready("RUNNING_LEFT");
+            // }
+            // else if(this.parent.controller.moveDir.x > 0)
+            // {
+            //     this.owner.animation.playIfNotAlready("RUNNING_RIGHT");
+            // }
+            // else
+            // {
+            //     this.owner.animation.playIfNotAlready("IDLE");
+            // }
     
-            if (this.parent.controller.moveDir.equals(Vec2.ZERO)) {
-                this.finished(PlayerStateType.IDLE);
-            }
+            // if (this.parent.controller.moveDir.equals(Vec2.ZERO)) {
+            //     this.finished(PlayerStateType.IDLE);
+            // }
 
             let sprite = this.owner.getScene().add.sprite("laserGun", "primary");
             let line = <Line>this.owner.getScene().add.graphic(GraphicType.LINE, "primary", {start: Vec2.ZERO, end: Vec2.ZERO});
@@ -78,7 +106,7 @@ export default class Moving extends PlayerState {
             if(this.parent.controller.faceDir.x < 0) 
             {
                 console.log("Attacking left");
-                this.owner.animation.play("ATTACKING_LEFT", false, "RUNNING_LEFT");
+                this.owner.animation.play("ATTACKING_LEFT", false, "IDLE");
                 
                 // Play the shooting animation for the laser gun
                 this.lasergun.playShootAnimation();

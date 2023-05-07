@@ -13,9 +13,8 @@ export default class Dead extends PlayerState {
      * that the player is officially dead.
      */
     onEnter(options: Record<string, any>): void {
-        this.parent.owner.animation.playIfNotAlready("DYING",false, "DEAD");
-        
-        this.emitter.fireEvent(PlayerEvent.PLAYER_KILLED);
+        this.parent.owner.animation.play("DYING",false, "DEAD");
+        //this.emitter.fireEvent(PlayerEvent.PLAYER_KILLED);
     }
 
     /**
@@ -29,7 +28,11 @@ export default class Dead extends PlayerState {
      * get updated.
      * @param deltaT 
      */
-    update(deltaT: number): void { }
+    update(deltaT: number): void {
+        // if (this.parent.owner.health <= 0) {
+        //     this.parent.owner.animation.playIfNotAlready("DYING",false, "DEAD");
+        // }
+    }
 
     onExit(): Record<string, any> { return {} }
 
