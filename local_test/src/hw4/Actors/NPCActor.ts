@@ -29,7 +29,9 @@ export default class NPCActor extends AnimatedSprite implements Battler, Targeti
     // The NPCs battler object
     protected _battler: Battler;
 
-    protected _targeting: TargetingEntity
+    protected _targeting: TargetingEntity;
+
+    public range: number;
 
     public constructor(sheet: Spritesheet) {
         super(sheet);
@@ -42,7 +44,7 @@ export default class NPCActor extends AnimatedSprite implements Battler, Targeti
     }
 
     /** The TargetingEntity interface */
-
+    
     public clearTarget(): void { this._targeting.clearTarget(); }
     public setTarget(targetable: TargetableEntity): void { this._targeting.setTarget(targetable); }
     public hasTarget(): boolean { return this._targeting.hasTarget(); }
