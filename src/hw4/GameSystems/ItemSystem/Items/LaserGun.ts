@@ -23,7 +23,7 @@ export default class LaserGun extends Item {
         this._laser = laser;
         this._laser.start.copy(Vec2.ZERO_STATIC);
         this._laser.end.copy(Vec2.ZERO_STATIC);
-        this._laser.color = Color.GREEN;
+        this._laser.color = Color.RED;
         this._laser.tweens.add("fade", {
             startDelay: 0,
             duration: 300,

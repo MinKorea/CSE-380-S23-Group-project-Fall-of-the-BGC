@@ -3,7 +3,7 @@ import AI from "../../../Wolfie2D/DataTypes/Interfaces/AI";
 import Vec2 from "../../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../../Wolfie2D/Events/GameEvent";
 import PlayerActor from "../../Actors/PlayerActor";
-import { ItemEvent } from "../../Events";
+import { ItemEvent, PlayerEvent } from "../../Events";
 import Inventory from "../../GameSystems/ItemSystem/Inventory";
 import Item from "../../GameSystems/ItemSystem/Item";
 import PlayerController from "./PlayerController";
@@ -48,6 +48,9 @@ export default class PlayerAI extends StateMachineAI implements AI {
 
     public handleEvent(event: GameEvent): void {
         switch(event.type) {
+            case "PLAYER_DAMAGED": {
+                this.owner.health -= 1;
+            }
             case ItemEvent.LASERGUN_FIRED: {
                 this.handleLaserFiredEvent(event.data.get("actorId"), event.data.get("to"), event.data.get("from"));
                 break;
@@ -63,6 +66,10 @@ export default class PlayerAI extends StateMachineAI implements AI {
         if (this.owner.id !== actorId && this.owner.collisionShape !== undefined ) {
             if (this.owner.collisionShape.getBoundingRect().intersectSegment(to, from.clone().sub(to)) !== null) {
                 this.owner.health -= 1;
+
+                if(from.x >= to.x)   this.owner.animation.playIfNotAlready("TAKING_DAMAGE_LEFT", false, "IDLE");
+                else                this.owner.animation.playIfNotAlready("TAKING_DAMAGE_RIGHT", false, "IDLE");
+                
             }
         }
     }

@@ -15,7 +15,10 @@ export class HasItem extends GoapState {
     }
 
     public isSatisfied(): boolean {
-        return this.finder.find(Array.from(this.actor.inventory.items())) !== null
+        
+        return true;
+
+        // return this.finder.find(Array.from(this.actor.inventory.items())) !== null
     }
     
 }
