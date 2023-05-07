@@ -354,7 +354,7 @@ export default class MainHW4Scene extends HW4Scene {
         if(Input.isKeyPressed("z")){
                 this.viewport.setZoomLevel(1);
         }
-
+        
         if(Input.isKeyPressed("x")){
             this.viewport.setZoomLevel(3);
          }
@@ -910,6 +910,5 @@ export default class MainHW4Scene extends HW4Scene {
 
     }
 
-    
     
 }
