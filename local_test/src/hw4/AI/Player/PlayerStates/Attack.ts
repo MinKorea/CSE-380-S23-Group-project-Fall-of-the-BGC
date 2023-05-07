@@ -13,6 +13,8 @@ export default class Attack extends PlayerState {
     protected tilemap: OrthogonalTilemap;
     protected weapon: PlayerWeapon;
 
+    // protected scene = this.owner.getScene();
+
     public override onEnter(options: Record<string, any>): void {
     
     }
@@ -36,6 +38,7 @@ export default class Attack extends PlayerState {
         // If the player hits the attack button and the weapon system isn't running, restart the system and fire!
         if (Input.isKeyJustPressed("space") && !this.weapon.isSystemRunning()) {
 
+            
             if(this.faceDir.x < 0)  this.owner.animation.playIfNotAlready("ATTACKING_LEFT");
             else                    this.owner.animation.playIfNotAlready("ATTACKING_RIGHT");
 

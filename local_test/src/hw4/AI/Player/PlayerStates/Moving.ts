@@ -8,6 +8,7 @@ import LaserGun from "../../../GameSystems/ItemSystem/Items/LaserGun";
 import { ItemEvent } from "../../../Events";
 import { GraphicType } from "../../../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import Line from "../../../../Wolfie2D/Nodes/Graphics/Line";
+import { GameEventType } from "../../../../Wolfie2D/Events/GameEventType";
 
 
 export default class Moving extends PlayerState {
@@ -50,6 +51,9 @@ export default class Moving extends PlayerState {
 
         if (Input.isKeyJustPressed("space")) {
             console.log("Space_pressed")
+
+            // Shoot Audio Played
+            this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.owner.getScene().getShootAudioKey(), loop: false, holdReference: false});
 
             if (this.parent.controller.moveDir.x < 0) {
                 this.owner.animation.playIfNotAlready("RUNNING_LEFT");

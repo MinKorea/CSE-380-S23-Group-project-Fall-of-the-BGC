@@ -12,6 +12,8 @@ import AABB from "../../../../Wolfie2D/DataTypes/Shapes/AABB";
 import Circle from "../../../../Wolfie2D/DataTypes/Shapes/Circle";
 import MainHW4Scene from "../../../Scenes/MainHW4Scene";
 import Sprite from "../../../../Wolfie2D/Nodes/Sprites/Sprite";
+import OrthogonalTilemap from "../../../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
+import { GameEventType } from "../../../../Wolfie2D/Events/GameEventType";
 
 
 export default class Idle extends PlayerState {
@@ -32,11 +34,49 @@ export default class Idle extends PlayerState {
         }
     }
 
+    protected getLaserEnd(walls: OrthogonalTilemap, start: Vec2, dir: Vec2): Vec2 {
+        let end = start.clone().add(dir.scaled(900));
+        let delta = end.clone().sub(start);
+
+        // Iterate through the tilemap region until we find a collision
+        let minX = Math.min(start.x, end.x);
+        let maxX = Math.max(start.x, end.x);
+        let minY = Math.min(start.y, end.y);
+        let maxY = Math.max(start.y, end.y);
+
+        let minIndex = walls.getTilemapPosition(minX, minY);
+		let maxIndex = walls.getTilemapPosition(maxX, maxY);
+
+        let tileSize = walls.getScaledTileSize();
+
+        for(let col = minIndex.x; col <= maxIndex.x; col++){
+            for(let row = minIndex.y; row <= maxIndex.y; row++){
+                if(walls.isTileCollidable(col, row)){
+                    // Get the position of this tile
+                    let tilePos = new Vec2(col * tileSize.x + tileSize.x/2, row * tileSize.y + tileSize.y/2);
+
+                    // Create a collider for this tile
+                    let collider = new AABB(tilePos, tileSize.scaled(1/2));
+
+                    let hit = collider.intersectSegment(start, delta, Vec2.ZERO);
+
+                    if(hit !== null && start.distanceSqTo(hit.pos) < start.distanceSqTo(end)){
+                        end = hit.pos;
+                    }
+                }
+            }
+        }
+        return end;
+    }
+
     public override update(deltaT: number): void {
         super.update(deltaT);
 
         // If the player hits the attack button and the weapon system isn't running, restart the system and fire!
         if (Input.isKeyJustPressed("space")) {
+            // Shoot Audio Played
+            this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.owner.getScene().getShootAudioKey(), loop: false, holdReference: false});
+        
             console.log("Space_pressed")
 
             let sprite = this.owner.getScene().add.sprite("laserGun", "primary");
@@ -45,7 +85,9 @@ export default class Idle extends PlayerState {
 
             this.lasergun.laserStart.copy(this.owner.position);
             this.lasergun.direction.copy(this.owner.position.dirTo(Input.getGlobalMousePosition()));
-            this.lasergun.laserEnd.copy(Input.getGlobalMousePosition());
+            // this.lasergun.laserEnd.copy(Input.getGlobalMousePosition());
+            this.lasergun.laserEnd.copy(this.getLaserEnd(this.owner.getScene().getWalls(), this.lasergun.laserStart, this.lasergun.direction));
+
 
             if(this.parent.controller.faceDir.x < 0) 
             {

@@ -44,6 +44,8 @@ import AstarStrategy from "../Pathfinding/AstarStrategy";
 import GameOver from "./GameOver";
 import HW4Scene from "./HW4Scene";
 import MainMenu from "./MainMenu";
+import LevelSelectionScene from "./LevelSelectionScene";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 const BattlerGroups = {
     RED: 1,
@@ -71,6 +73,8 @@ export default class MainHW4Scene extends HW4Scene {
 
     private player: (PlayerActor)[];
     private enemies: (NPCActor)[];
+
+    protected boss: NPCActor;
     
     // private pause: (PauseHUD);
 
@@ -88,6 +92,12 @@ export default class MainHW4Scene extends HW4Scene {
     public static CONTROLS_PATH = "hw4_assets/sprites/Controls-Screen.png"
     private controlsImage: Sprite;
 
+    public static SHOOT_AUDIO_KEY = "PLAYER_SHOOT"
+    public static SHOOT_AUDIO_PATH = "hw4_assets/sounds/laserShoot.wav"
+
+    //private zoomBool = false;
+
+    // protected shootAudioKey: string;
 
     private bases: BattlerBase[];
 
@@ -112,6 +122,8 @@ export default class MainHW4Scene extends HW4Scene {
 
         this.laserguns = new Array<LaserGun>();
         this.healthpacks = new Array<Healthpack>();
+
+        this.shootAudioKey = MainHW4Scene.SHOOT_AUDIO_KEY;
     }
 
     /**
@@ -130,7 +142,7 @@ export default class MainHW4Scene extends HW4Scene {
         this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/Ball_Bat.json");
 
         // Load the tilemap
-        this.load.tilemap("level", "hw4_assets/tilemaps/Level1Tilemap.json");
+        this.load.tilemap("level", "hw4_assets/tilemaps/BGCTilemap.json");
 
         // Load the enemy locations
         this.load.object("red", "hw4_assets/data/enemies/red.json");
@@ -147,6 +159,8 @@ export default class MainHW4Scene extends HW4Scene {
         this.load.image(MainHW4Scene.PAUSE_KEY, MainHW4Scene.PAUSE_PATH);
         this.load.image(MainHW4Scene.HELP_KEY, MainHW4Scene.HELP_PATH);
         this.load.image(MainHW4Scene.CONTROLS_KEY, MainHW4Scene.CONTROLS_PATH);
+
+        this.load.audio(this.shootAudioKey, MainHW4Scene.SHOOT_AUDIO_PATH);
 
     }
     /**
@@ -217,7 +231,7 @@ export default class MainHW4Scene extends HW4Scene {
 
         this.pauseImage = this.add.sprite(MainHW4Scene.PAUSE_KEY, pauseLayer.getName());
         this.pauseImage.position.copy(this.viewport.getCenter());
-        this.pauseImage.alpha = 0.7;
+        // this.pauseImage.alpha = 0.7;
 
         const unpause = this.add.uiElement(UIElementType.BUTTON, MainSceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 200), text: ""});
         unpause.size.set(400, 100);
@@ -292,7 +306,7 @@ export default class MainHW4Scene extends HW4Scene {
 
         // console.log(val);
 
-        // this.viewport.setZoomLevel(.5);
+        this.viewport.setZoomLevel(3);
         
         this.receiver.subscribe(PlayerEvent.PLAYER_KILLED);
         this.receiver.subscribe(BattlerEvent.BATTLER_KILLED);
@@ -305,7 +319,7 @@ export default class MainHW4Scene extends HW4Scene {
         this.receiver.subscribe("backcontrols");
         this.receiver.subscribe("helpcontrols");
 
-        
+        // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
     }
     /**
      * @see Scene.updateScene
@@ -321,10 +335,38 @@ export default class MainHW4Scene extends HW4Scene {
         // this.pause.update(deltaT);
     
         if (Input.isKeyJustPressed("escape")){
+        
+
             console.log("Escape pressed");
             let v = new GameEvent("pause", null);
             this.handleEvent(v);
         }
+        if (this.boss.health <= 0) {
+            this.sceneManager.changeToScene(LevelSelectionScene);
+            this.viewport.setZoomLevel(1);
+        }
+        let pauseLayer = this.getLayer("PAUSE");
+       
+        if(!pauseLayer.isHidden()){
+            this.pauseImage.position.copy(this.viewport.getCenter()); // Works but when moving the screen gets moved upwards.
+        }
+
+        if(Input.isKeyPressed("z")){
+                this.viewport.setZoomLevel(1);
+        }
+
+        if(Input.isKeyPressed("x")){
+            this.viewport.setZoomLevel(3);
+         }
+
+
+        // Another way to play shoot audio is when player pressed space
+        //  if(Input.isKeyJustPressed("space")){
+        //     console.log("Shoot Audio Played");
+        //     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
+        //  }
+        // TODO If input is 2, 3, 4, 5, 6 go to those levels by chaning the scene
+
     }
 
     /**
@@ -345,12 +387,20 @@ export default class MainHW4Scene extends HW4Scene {
                 break;
             }
             case PlayerEvent.PLAYER_KILLED: {
+                this.viewport.follow(undefined);
                 this.sceneManager.changeToScene(GameOver);
             }
             case "pause": {
                 console.log("Pause");
 
+                // this.pauseImage.scale = this.pauseImage.sizeWithZoom;
+
+                this.viewport.setZoomLevel(1);
                 this.pauseImage.position.copy(this.viewport.getCenter()); // Works but when moving the screen gets moved upwards.
+                
+                
+                
+                // this.viewport.follow(undefined);
                 
                 this.player[0].freeze(); // Freezes player
                 this.player[0].disablePhysics();
@@ -373,6 +423,7 @@ export default class MainHW4Scene extends HW4Scene {
             case "unpause": {
                 console.log("unpause");
 
+                this.viewport.setZoomLevel(3);
                 let center = this.viewport.getCenter();
                 // this.pauseMenu.position.set(center.x, center.y);
                 
@@ -397,6 +448,7 @@ export default class MainHW4Scene extends HW4Scene {
             } 
             case "mainmenu": {
                 this.viewport.follow(undefined);
+                this.viewport.setZoomLevel(1);
                 this.sceneManager.changeToScene(MainMenu);
                 break;
             } 
@@ -534,14 +586,14 @@ export default class MainHW4Scene extends HW4Scene {
     protected initializePlayer(): void {
         const center = this.viewport.getCenter();
         let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-        player.position.set(center.x, center.y);
+        player.position.set(center.x-300, center.y+300);
 
         player.battleGroup = 2;
         
 
         player.health = 10;
         player.maxHealth = 10;
-        player.scale = new Vec2(1, 1); // Scales player 
+        player.scale = new Vec2(0.4, 0.4); // Scales player 
 
         player.inventory.onChange = ItemEvent.INVENTORY_CHANGED
         // this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
@@ -552,7 +604,7 @@ export default class MainHW4Scene extends HW4Scene {
         // });
 
         // Give the player physics
-        player.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 64)));
+        player.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
 
         // Give the player a healthbar
         let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -2/3)});
@@ -567,7 +619,7 @@ export default class MainHW4Scene extends HW4Scene {
         this.battlers.push(player);
         this.player.push(player);
         this.viewport.follow(player);
-        this.viewport.setZoomLevel(1);
+        this.viewport.setZoomLevel(3);
         
     }
     /**
@@ -582,7 +634,7 @@ export default class MainHW4Scene extends HW4Scene {
         for (let i = 0; i < red.healers.length; i++) {
             let npc = this.add.animatedSprite(NPCActor, "RedHealer", "primary");
             npc.position.set(red.healers[i][0], red.healers[i][1]);
-            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
             
             
 
@@ -641,7 +693,7 @@ export default class MainHW4Scene extends HW4Scene {
         for (let i = 0; i < blue.enemies.length; i++) {
             let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
             npc.position.set(blue.enemies[i][0], blue.enemies[i][1]);
-            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
 
             // Give the NPCS their healthbars
             let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
@@ -652,9 +704,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 10;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
-            npc.scale = new Vec2(1,1);
-
-            
+            npc.scale = new Vec2(0.4,0.4);
 
             // Give the NPCs their AI
             npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
@@ -665,6 +715,32 @@ export default class MainHW4Scene extends HW4Scene {
             this.battlers.push(npc);
             this.enemies.push(npc);
         }
+
+        let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
+            this.boss = npc;
+            npc.position.set(900,100);
+            npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+
+            // Give the NPCS their healthbars
+            let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+            this.healthbars.set(npc.id, healthbar);
+
+            npc.battleGroup = 1
+            npc.speed = 10;
+            npc.health = 50;
+            npc.maxHealth = 50;
+            npc.navkey = "navmesh";
+            npc.scale = new Vec2(1,1);
+
+
+            // Give the NPCs their AI
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
+
+            // Play the NPCs "IDLE" animation 
+            npc.animation.play("IDLE");
+
+            this.battlers.push(npc);
+            this.enemies.push(npc);
 
         // Initialize the blue healers
         for (let i = 0; i < blue.healers.length; i++) {
@@ -678,7 +754,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.health = 10;
             npc.maxHealth = 10;
             npc.navkey = "navmesh";
-            npc.scale = new Vec2(1,1);
+            npc.scale = new Vec2(0.4,0.4);
 
             // npc.getPath(this.playerPos, npc.position);
             npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
@@ -819,7 +895,7 @@ export default class MainHW4Scene extends HW4Scene {
                     let tilePos = new Vec2(col * tileSize.x + tileSize.x / 2, row * tileSize.y + tileSize.y / 2);
 
                     // Create a collider for this tile
-                    let collider = new AABB(tilePos, tileSize.scaled(1 / 2));
+                    let collider = new AABB(tilePos, tileSize.scaled(1/4));
 
                     let hit = collider.intersectSegment(start, delta, Vec2.ZERO);
 
@@ -834,5 +910,6 @@ export default class MainHW4Scene extends HW4Scene {
 
     }
 
+    
     
 }

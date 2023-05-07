@@ -8,6 +8,8 @@ import Battler from "../GameSystems/BattleSystem/Battler";
 
 export default abstract class HW4Scene extends Scene {
 
+    protected shootAudioKey: string;
+
     public abstract getBattlers(): Battler[];
 
     public abstract getWalls(): OrthogonalTilemap;
@@ -17,5 +19,10 @@ export default abstract class HW4Scene extends Scene {
     public abstract getLaserGuns(): LaserGun[];
 
     public abstract isTargetVisible(position: Vec2, target: Vec2): boolean;
+
+    public getShootAudioKey(): string {
+        return this.shootAudioKey;
+    }
+
     
 }

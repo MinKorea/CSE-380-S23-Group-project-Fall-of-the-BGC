@@ -12,6 +12,7 @@ import HelpScene from "./HelpScene";
 import ControlsScene from "./ControlsScene";
 import LevelSelectionScene from "./LevelSelectionScene";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
+import Input from "../../Wolfie2D/Input/Input";
 
 export const MainMenuLayers = {
 	PRIMARY: "PRIMARY",
@@ -99,6 +100,10 @@ export default class MainMenu extends Scene {
         while(this.receiver.hasNextEvent()){
             this.handleEvent(this.receiver.getNextEvent());
         }
+
+        if(Input.isKeyPressed("1")){
+            this.sceneManager.changeToScene(MainHW4Scene);
+         }
     }
 
     protected initBackground(): void {

@@ -24,7 +24,7 @@ export default class AStarDemoScene extends Scene {
     protected path: NavigationPath;
 
     public loadScene(): void {
-        this.load.tilemap("level", "hw4_assets/tilemaps/HW3Tilemap.json");
+        this.load.tilemap("level", "hw4_assets/tilemaps/BGCTilemap.json");
         this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/BlueEnemy.json");
     }
 
