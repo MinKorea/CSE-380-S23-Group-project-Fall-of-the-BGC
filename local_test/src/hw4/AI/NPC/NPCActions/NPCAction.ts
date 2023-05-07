@@ -55,7 +55,7 @@ export default abstract class NPCAction extends GoapAction {
         this.target = this.targetFinder.find(this.targets);
 
         // If we found a target, set the NPCs target to the target and find a path to the target
-        if (this.target !== null) {
+        if (this.target !== null && this.actor.position.distanceTo(this.target.position) < 250) {
             // Set the actors current target to be the target for this action
             this.actor.setTarget(this.target);
             // Construct a path from the actor to the target
@@ -93,8 +93,10 @@ export default abstract class NPCAction extends GoapAction {
 
                     this.timer.start();
                 }
-            } else {
-                this.actor.moveOnPath(this.actor.speed*deltaT*25, this.path);
+            } else 
+            {
+                this.actor.moveOnPath(this.actor.speed*deltaT*25, this.path); 
+                if(this.actor.collidedWithTilemap)  this.path = this.actor.getPath(this.actor.position, this.target.position);
             }
         } 
         else 
@@ -103,14 +105,14 @@ export default abstract class NPCAction extends GoapAction {
             this.target = this.targetFinder.find(this.targets);
 
             // If we found a target, set the NPCs target to the target and find a path to the target
-            if (this.target !== null) {
+            if (this.target !== null && this.actor.position.distanceTo(this.target.position) < 250) {
                 // Set the actors current target to be the target for this action
                 this.actor.setTarget(this.target);
                 // Construct a path from the actor to the target
                 this.path = this.actor.getPath(this.actor.position, this.target.position);
             }
 
-            this.finished();
+            // this.finished();
         }
     }
 
