@@ -17,6 +17,9 @@ export default class Dead extends PlayerState {
         //this.parent.owner.animation.play("DYING",false, "DEAD");
         //this.parent.owner.animation.play("DEAD",false, PlayerEvent.PLAYER_KILLED);
         this.emitter.fireEvent(PlayerEvent.PLAYER_KILLED);
+        // this.parent.owner.animation.play("DYING", false, PlayerEvent.PLAYER_KILLED);
+        
+        // this.emitter.fireEvent(PlayerEvent.PLAYER_KILLED);
     }
 
     /**

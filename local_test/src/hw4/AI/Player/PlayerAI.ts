@@ -66,9 +66,9 @@ export default class PlayerAI extends StateMachineAI implements AI {
         if (this.owner.id !== actorId && this.owner.collisionShape !== undefined ) {
             if (this.owner.collisionShape.getBoundingRect().intersectSegment(to, from.clone().sub(to)) !== null) {
                 this.owner.health -= 1;
-
+                
                 if(from.x >= to.x)   this.owner.animation.playIfNotAlready("TAKING_DAMAGE_LEFT", false, "IDLE");
-                else                this.owner.animation.playIfNotAlready("TAKING_DAMAGE_RIGHT", false, "IDLE");
+                else                 this.owner.animation.playIfNotAlready("TAKING_DAMAGE_RIGHT", false, "IDLE");
                 
             }
         }

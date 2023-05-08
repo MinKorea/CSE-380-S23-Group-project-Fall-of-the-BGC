@@ -559,11 +559,10 @@ export default class MainHW4Scene extends HW4Scene {
         let id: number = event.data.get("id");
         let battler = this.battlers.find(b => b.id === id);
 
-        // if (battler) {
-        //     //wait 45 before removing the battler
-        //     battler.battlerActive = false;
-        //     this.healthbars.get(id).visible = false;
-        // }
+        if (battler) {
+            battler.battlerActive = false;
+            this.healthbars.get(id).visible = false;
+        }
         
     }
 
@@ -646,7 +645,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.navkey = "navmesh";
             // npc.scale = new Vec2(1,1);
 
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 10});
             // npc.moveOnPath(npc.speed, npc.getPath(this.battlers[0].position, npc.position));
 
             // Give the NPC a healthbar
@@ -677,9 +676,8 @@ export default class MainHW4Scene extends HW4Scene {
             npc.navkey = "navmesh";
             // npc.scale = new Vec2(3,3);
 
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 10});
 
-            // npc.moveOnPath(npc.speed, npc.getPath(this.battlers[0].position, npc.position));
 
             // Play the NPCs "IDLE" animation 
             npc.animation.play("IDLE");
@@ -708,7 +706,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.scale = new Vec2(0.4,0.4);
 
             // Give the NPCs their AI
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 10});
 
             // Play the NPCs "IDLE" animation 
             npc.animation.play("IDLE");
@@ -735,7 +733,7 @@ export default class MainHW4Scene extends HW4Scene {
 
 
             // Give the NPCs their AI
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 10});
 
             // Play the NPCs "IDLE" animation 
             npc.animation.play("IDLE");
@@ -758,7 +756,7 @@ export default class MainHW4Scene extends HW4Scene {
             npc.scale = new Vec2(0.4,0.4);
 
             // npc.getPath(this.playerPos, npc.position);
-            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 100});
+            npc.addAI(GuardBehavior, {target: this.battlers[0], range: 10});
 
             let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
             this.healthbars.set(npc.id, healthbar);

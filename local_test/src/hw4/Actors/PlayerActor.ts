@@ -62,9 +62,9 @@ export default class PlayerActor extends AnimatedSprite implements Battler {
     }
     set health(value: number) {
         this.battler.health = value;
-        if (this.health <= 0) {
-            this.emitter.fireEvent(BattlerEvent.BATTLER_KILLED, {id: this.id});
-        }
+        // if (this.health <= 0) {
+        //     this.emitter.fireEvent(BattlerEvent.BATTLER_KILLED, {id: this.id});
+        // }
     }
     get speed(): number {
         return this.battler.speed;

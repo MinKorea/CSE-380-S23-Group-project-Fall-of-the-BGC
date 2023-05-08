@@ -52,8 +52,13 @@ export default abstract class PlayerState extends State {
         if(this.parent.owner.health <= 0)
         {
             this.parent.owner.animation.playIfNotAlready("DYING",false, "DEAD");
-            this.parent.owner.animation.playIfNotAlready("DEAD",false, PlayerStateType.DEAD);
-            this.finished(PlayerStateType.DEAD);
+            //this.parent.owner.animation.playIfNotAlready("DEAD",false, PlayerStateType.DEAD);
+            //this.finished(PlayerStateType.DEAD);
+            // this.parent.owner.animation.play("DYING", true);
+            if (!this.parent.owner.animation.isPlaying("DYING")) {
+                this.parent.owner.animation.play("DEAD");
+                this.finished(PlayerStateType.DEAD);
+            }
         }
                        
 
