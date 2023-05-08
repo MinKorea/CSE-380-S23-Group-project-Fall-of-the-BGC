@@ -65,7 +65,7 @@ export default class PlayerAI extends StateMachineAI implements AI {
     protected handleLaserFiredEvent(actorId: number, to: Vec2, from: Vec2): void {
         if (this.owner.id !== actorId && this.owner.collisionShape !== undefined ) {
             if (this.owner.collisionShape.getBoundingRect().intersectSegment(to, from.clone().sub(to)) !== null
-                ) {
+            || this.owner.collisionShape.center.distanceTo(to) < 55) {
                 this.owner.health -= 1;
                 
                 if(from.x >= to.x)   this.owner.animation.playIfNotAlready("TAKING_DAMAGE_LEFT", false, "IDLE");

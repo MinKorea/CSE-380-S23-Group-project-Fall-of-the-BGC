@@ -67,7 +67,7 @@ export default abstract class NPCAction extends GoapAction {
     public update(deltaT: number): void {
         if (this.target !== null && this.path !== null && !this.path.isDone()) {
             
-            if (this.actor.atTarget() || this.actor.position.distanceTo(this.target.position) < 100) {
+            if (this.actor.atTarget() || this.actor.position.distanceTo(this.target.position) < 50) {
                 // this.performAction(this.target);
 
                 let sprite = this.actor.getScene().add.sprite("laserGun", "primary");
