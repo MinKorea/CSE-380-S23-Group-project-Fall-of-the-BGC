@@ -13,6 +13,7 @@ import Level1Scene from "./Level1Scene";
 import testlvl2 from "./Level2Scene";
 import testlvl2Scene from "./Level2Scene";
 import Level2Scene from "./Level2Scene";
+import LastScene from "./LastScene";
 import Level3Scene from "./Level3Scene";
 // import Level2 from "./Level2Scene";
 // import Level2Scene from "./Level2Scene";
@@ -195,6 +196,7 @@ export default class LevelSelectionScene extends Scene {
              }
              case "final": {
                 console.log("Goto final lvl");  
+                this.sceneManager.changeToScene(LastScene);
                 // TODO Change scene to final level
                  break;
              }

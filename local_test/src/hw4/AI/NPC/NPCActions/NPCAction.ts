@@ -65,6 +65,7 @@ export default abstract class NPCAction extends GoapAction {
     }
 
     public update(deltaT: number): void {
+
         if (this.target !== null && this.path !== null && !this.path.isDone()) {
             
             if (this.actor.atTarget() || this.actor.position.distanceTo(this.target.position) < 50) {
@@ -84,7 +85,7 @@ export default abstract class NPCAction extends GoapAction {
 
                     // Play the shooting animation for the laser gun  
                     this.lasergun.playShootAnimation();
-
+                    this.actor.animation.playIfNotAlready("ATTACKING", false);
                     // Send a laser fired event
                     this.emitter.fireEvent(ItemEvent.LASERGUN_FIRED, {
                         actorId: this.actor.id,
@@ -96,6 +97,7 @@ export default abstract class NPCAction extends GoapAction {
                 }
             } else 
             {
+                if(!this.actor.animation.isPlaying("ATTACKING"))    this.actor.animation.playIfNotAlready("IDLE", true);
                 this.actor.moveOnPath(this.actor.speed*deltaT*25, this.path);
                 if(this.actor.collidedWithTilemap)  this.path = this.actor.getPath(this.actor.position, this.target.position);
             }

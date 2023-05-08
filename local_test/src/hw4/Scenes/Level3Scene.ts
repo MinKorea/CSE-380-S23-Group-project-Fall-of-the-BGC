@@ -145,7 +145,7 @@ export default class Level3Scene extends HW4Scene {
         this.load.spritesheet("player1", "hw4_assets/spritesheets/Warball_001_Lukas.json");
 
         // Load in the enemy sprites
-        this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/Ball_Bat.json");
+        this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/Ball_Clown.json");
         this.load.spritesheet("RedEnemy", "hw4_assets/spritesheets/Ball_Bat.json");
         this.load.spritesheet("BlueHealer", "hw4_assets/spritesheets/Psyfly.json");
         this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/Ball_Bat.json");
@@ -155,7 +155,7 @@ export default class Level3Scene extends HW4Scene {
 
         // Load the enemy locations
         // this.load.object("red", "hw4_assets/data/enemies/lvl2.json");
-        this.load.object("blue", "hw4_assets/data/enemies/lvl2.json");
+        this.load.object("blue", "hw4_assets/data/enemies/lvl3.json");
 
         // Load the healthpack and lasergun loactions
         this.load.object("healthpacks", "hw4_assets/data/items/healthpacks.json");
@@ -619,7 +619,7 @@ protected initializePlayer(): void {
     player.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
 
     // Give the player a healthbar
-    let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -2/3)});
+     let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -1/3)});
     this.healthbars.set(player.id, healthbar);
 
     // Give the player PlayerAI
@@ -650,13 +650,13 @@ protected initializeNPCs(): void {
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
 
         // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1
         npc.speed = 10;
-        npc.health = 2;
-        npc.maxHealth = 2;
+        npc.health = 3;
+        npc.maxHealth = 3;
         npc.navkey = "navmesh";
         npc.scale = new Vec2(0.4,0.4);
 
@@ -681,8 +681,8 @@ protected initializeNPCs(): void {
 
         npc.battleGroup = 1
         npc.speed = 10;
-        npc.health = 15;
-        npc.maxHealth = 15;
+        npc.health = 20;
+        npc.maxHealth = 20;
         npc.navkey = "navmesh";
         npc.scale = new Vec2(1,1);
 

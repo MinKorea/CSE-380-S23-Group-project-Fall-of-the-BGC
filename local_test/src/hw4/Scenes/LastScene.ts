@@ -1,46 +1,65 @@
-import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
-import Scene from "../../Wolfie2D/Scene/Scene";
-import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
-import LaserGun from "../GameSystems/ItemSystem/Items/LaserGun";
-import Healthpack from "../GameSystems/ItemSystem/Items/Healthpack";
-import Battler from "../GameSystems/BattleSystem/Battler";
-import Actor from "../../Wolfie2D/DataTypes/Interfaces/Actor";
-import HealthbarHUD from "../GameSystems/HUD/HealthbarHUD";
-import PlayerActor from "../Actors/PlayerActor";
-import NPCActor from "../Actors/NPCActor";
-import BattlerBase from "../GameSystems/BattleSystem/BattlerBase";
 import PositionGraph from "../../Wolfie2D/DataTypes/Graphs/PositionGraph";
-import { BattlerEvent, ItemEvent, PlayerEvent } from "../Events";
-import MathUtils from "../../Wolfie2D/Utils/MathUtils";
+import Actor from "../../Wolfie2D/DataTypes/Interfaces/Actor";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
-import Line from "../../Wolfie2D/Nodes/Graphics/Line";
+import Shape from "../../Wolfie2D/DataTypes/Shapes/Shape";
+import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
+import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Input from "../../Wolfie2D/Input/Input";
+import GameNode from "../../Wolfie2D/Nodes/GameNode";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
-import GuardBehavior from "../AI/NPC/NPCBehavior/GaurdBehavior";
+import Line from "../../Wolfie2D/Nodes/Graphics/Line";
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
+import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
+import UIElement from "../../Wolfie2D/Nodes/UIElement";
+import Button from "../../Wolfie2D/Nodes/UIElements/Button";
+import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Navmesh from "../../Wolfie2D/Pathfinding/Navmesh";
 import DirectStrategy from "../../Wolfie2D/Pathfinding/Strategies/DirectStrategy";
-import AstarStrategy from "../Pathfinding/AstarStrategy";
+import RenderingManager from "../../Wolfie2D/Rendering/RenderingManager";
+import SceneManager from "../../Wolfie2D/Scene/SceneManager";
+import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
+import Timer from "../../Wolfie2D/Timing/Timer";
+import Color from "../../Wolfie2D/Utils/Color";
+import MathUtils from "../../Wolfie2D/Utils/MathUtils";
+import NPCActor from "../Actors/NPCActor";
+import PlayerActor from "../Actors/PlayerActor";
+import GuardBehavior from "../AI/NPC/NPCBehavior/GaurdBehavior";
+import HealerBehavior from "../AI/NPC/NPCBehavior/HealerBehavior";
 import PlayerAI from "../AI/Player/PlayerAI";
-import GameEvent from "../../Wolfie2D/Events/GameEvent";
-import { ClosestPositioned } from "../GameSystems/Searching/HW4Reducers";
-import GameNode from "../../Wolfie2D/Nodes/GameNode";
+import PlayerController, { PlayerInput } from "../AI/Player/PlayerController";
+import { ItemEvent, PlayerEvent, BattlerEvent, HudEvent } from "../Events";
+import Battler from "../GameSystems/BattleSystem/Battler";
+import BattlerBase from "../GameSystems/BattleSystem/BattlerBase";
+import HealthbarHUD from "../GameSystems/HUD/HealthbarHUD";
+import InventoryHUD from "../GameSystems/HUD/InventoryHUD";
+import PauseHUD from "../GameSystems/HUD/PauseHUD";
 import Inventory from "../GameSystems/ItemSystem/Inventory";
 import Item from "../GameSystems/ItemSystem/Item";
-import MainMenu from "./MainMenu";
-import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
-// import MainHW4Scene from "./MainHW4Scene";
-import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
-import Color from "../../Wolfie2D/Utils/Color";
-import Input from "../../Wolfie2D/Input/Input";
-import LevelSelectionScene from "./LevelSelectionScene";
+import Healthpack from "../GameSystems/ItemSystem/Items/Healthpack";
+import LaserGun from "../GameSystems/ItemSystem/Items/LaserGun";
+import { ClosestPositioned } from "../GameSystems/Searching/HW4Reducers";
+import BasicTargetable from "../GameSystems/Targeting/BasicTargetable";
+import Position from "../GameSystems/Targeting/Position";
+import AstarStrategy from "../Pathfinding/AstarStrategy";
 import GameOver from "./GameOver";
-// import testScene from "./Level1Scene";
+// import HW4Scene from "./HW4Scene";
+// import MainMenu from "./MainMenu";
+// import LevelSelectionScene from "./LevelSelectionScene";
+// import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+// import testHW4Scene from "./FinalProjectScene";
+import FinalProjectScene from "./FinalProjectScene";
+// import testMainScene from "./testmain";
+import HW4Scene from "./HW4Scene";
+import LevelSelectionScene from "./LevelSelectionScene";
+import MainMenu from "./MainMenu";
+
 
 const BattlerGroups = {
     RED: 1,
     BLUE: 2
 } as const;
 
-export const FinalProjectSceneLayers = {
+export const Level2SceneLayers = {
 	PRIMARY: "PRIMARY",
 	BACKGROUND: "BACKGROUND", 
 	UI: "UI",
@@ -50,9 +69,10 @@ export const FinalProjectSceneLayers = {
 } as const;
 
 
-export default abstract class FinalProjectScene extends Scene {
 
-       /** GameSystems in the HW3 Scene */
+export default class LastScene extends HW4Scene {
+
+    /** GameSystems in the HW3 Scene */
     // private inventoryHud: InventoryHUD;
 
     /** All the battlers in the HW3Scene (including the player) */
@@ -65,7 +85,7 @@ export default abstract class FinalProjectScene extends Scene {
 
     protected boss: NPCActor;
     
-    protected shootAudioKey: string;
+    // protected shootAudioKey: string;
 
     //private zoomBool = false;
 
@@ -96,8 +116,63 @@ export default abstract class FinalProjectScene extends Scene {
     public static CONTROLS_KEY = "CONTROLS"
     public static CONTROLS_PATH = "hw4_assets/sprites/Controls-Screen.png"
    
+    public static SHOOT_AUDIO_KEY = "PLAYER_SHOOT"
+    public static SHOOT_AUDIO_PATH = "hw4_assets/sounds/laserShoot.wav"
 
 
+    public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
+        super(viewport, sceneManager, renderingManager, options);
+
+        this.battlers = new Array<Battler & Actor>();
+        this.healthbars = new Map<number, HealthbarHUD>();
+        this.player = new Array<PlayerActor>();
+        this.enemies = new Array<NPCActor>();
+   
+
+        this.laserguns = new Array<LaserGun>();
+        this.healthpacks = new Array<Healthpack>();
+
+        this.shootAudioKey = LastScene.SHOOT_AUDIO_KEY;
+    }
+
+    /**
+     * @see Scene.update()
+     */
+    public override loadScene() {
+
+
+        // Load the player and enemy spritesheets
+        this.load.spritesheet("player1", "hw4_assets/spritesheets/Warball_001_Lukas.json");
+
+        // Load in the enemy sprites
+        this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/Ball_Bat.json");
+        this.load.spritesheet("RedEnemy", "hw4_assets/spritesheets/Ball_Bat.json");
+        this.load.spritesheet("BlueHealer", "hw4_assets/spritesheets/Psyfly.json");
+        this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/Ball_Bat.json");
+        this.load.spritesheet("Boss", "hw4_assets/spritesheets/KYU.json");
+
+        // Load the tilemap
+        this.load.tilemap("level", "hw4_assets/tilemaps/FinalStageTilemap.json");
+
+        // Load the enemy locations
+        // this.load.object("boss", "hw4_assets/data/enemies/lvl6.json");
+        // this.load.object("blue", "hw4_assets/data/enemies/red.json");
+
+        // Load the healthpack and lasergun loactions
+        this.load.object("healthpacks", "hw4_assets/data/items/healthpacks.json");
+        this.load.object("laserguns", "hw4_assets/data/items/laserguns.json");
+
+        // Load the healthpack, inventory slot, and laser gun sprites
+        this.load.image("healthpack", "hw4_assets/sprites/healthpack.png");
+        this.load.image("inventorySlot", "hw4_assets/sprites/inventory.png");
+        this.load.image("laserGun", "hw4_assets/sprites/laserGun.png");
+        this.load.image(FinalProjectScene.PAUSE_KEY, FinalProjectScene.PAUSE_PATH);
+        this.load.image(FinalProjectScene.HELP_KEY, FinalProjectScene.HELP_PATH);
+        this.load.image(FinalProjectScene.CONTROLS_KEY, FinalProjectScene.CONTROLS_PATH);
+
+        this.load.audio(this.shootAudioKey, LastScene.SHOOT_AUDIO_PATH);
+
+    }
     
     public startScene() {
         // super.startScene();
@@ -165,32 +240,32 @@ export default abstract class FinalProjectScene extends Scene {
 
         let pauseLayer = this.getLayer("PAUSE");
 
-        this.pauseImage = this.add.sprite(FinalProjectScene.PAUSE_KEY, pauseLayer.getName());
+        this.pauseImage = this.add.sprite(LastScene.PAUSE_KEY, pauseLayer.getName());
         this.pauseImage.position.copy(this.viewport.getCenter());
         // this.pauseImage.alpha = 0.7;
 
-        const unpause = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 200), text: ""});
+        const unpause = this.add.uiElement(UIElementType.BUTTON, Level2SceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 200), text: ""});
         unpause.size.set(400, 100);
         unpause.borderWidth = 2;
         unpause.borderColor = Color.TRANSPARENT;
         unpause.backgroundColor = Color.TRANSPARENT;
         unpause.onClickEventId = "unpause";
 
-        const mainMenu = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y + 233), text: ""});
+        const mainMenu = this.add.uiElement(UIElementType.BUTTON, Level2SceneLayers.PAUSE, {position: new Vec2(center.x, center.y + 233), text: ""});
         mainMenu.size.set(400, 100);
         mainMenu.borderWidth = 2;
         mainMenu.borderColor = Color.TRANSPARENT;
         mainMenu.backgroundColor = Color.TRANSPARENT;
         mainMenu.onClickEventId = "mainmenu";
 
-        const controlsButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 55), text: ""});
+        const controlsButton = this.add.uiElement(UIElementType.BUTTON, Level2SceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 55), text: ""});
         controlsButton.size.set(400, 100);
         controlsButton.borderWidth = 2;
         controlsButton.borderColor = Color.TRANSPARENT;
         controlsButton.backgroundColor = Color.TRANSPARENT;
         controlsButton.onClickEventId = "controls";
 
-        const helpButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y + 90), text: ""});
+        const helpButton = this.add.uiElement(UIElementType.BUTTON, Level2SceneLayers.PAUSE, {position: new Vec2(center.x, center.y + 90), text: ""});
         helpButton.size.set(400, 100)
         helpButton.borderWidth = 2;
         helpButton.borderColor = Color.TRANSPARENT;
@@ -204,11 +279,11 @@ export default abstract class FinalProjectScene extends Scene {
        
         let controlsLayer = this.getLayer("CONTROLS");
 
-        this.controlsImage = this.add.sprite(FinalProjectScene.CONTROLS_KEY, controlsLayer.getName());
+        this.controlsImage = this.add.sprite(LastScene.CONTROLS_KEY, controlsLayer.getName());
         this.controlsImage.position.copy(this.viewport.getCenter());
         // this.controlsImage.alpha = 0.5;
 
-        const controlsBackButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.CONTROLS, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
+        const controlsBackButton = this.add.uiElement(UIElementType.BUTTON, Level2SceneLayers.CONTROLS, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
         controlsBackButton.size.set(200, 50);
         controlsBackButton.borderWidth = 2;
         controlsBackButton.borderColor = Color.TRANSPARENT;
@@ -221,11 +296,11 @@ export default abstract class FinalProjectScene extends Scene {
         // 
         let helpLayer = this.getLayer("HELP");
 
-        this.helpImage = this.add.sprite(FinalProjectScene.HELP_KEY, helpLayer.getName());
+        this.helpImage = this.add.sprite(LastScene.HELP_KEY, helpLayer.getName());
         this.helpImage.position.copy(this.viewport.getCenter());
         // this.helpImage.alpha = 0.5;
 
-        const helpBackButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.HELP, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
+        const helpBackButton = this.add.uiElement(UIElementType.BUTTON, Level2SceneLayers.HELP, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
         helpBackButton.size.set(200, 50);
         helpBackButton.borderWidth = 2;
         helpBackButton.borderColor = Color.TRANSPARENT;
@@ -258,7 +333,7 @@ export default abstract class FinalProjectScene extends Scene {
         // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
     }
 
-  /**
+    /**
      * @see Scene.updateScene
      */
   public override updateScene(deltaT: number): void {
@@ -279,10 +354,9 @@ export default abstract class FinalProjectScene extends Scene {
         this.handleEvent(v);
     }
     if (this.boss.health <= 0) {
-        this.viewport.follow(undefined);
-        this.viewport.setZoomLevel(1);
-        this.sceneManager.changeToScene(LevelSelectionScene);
+        // this.viewport.follow(undefined);
         // this.viewport.setZoomLevel(1);
+        // this.sceneManager.changeToScene(LevelSelectionScene);
     }
     let pauseLayer = this.getLayer("PAUSE");
    
@@ -316,6 +390,9 @@ public handleEvent(event: GameEvent): void {
     switch (event.type) {
         case BattlerEvent.BATTLER_KILLED: {
             this.handleBattlerKilled(event);
+            this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+            this.sceneManager.changeToScene(LevelSelectionScene);
             break;
         }
         case BattlerEvent.BATTLER_RESPAWN: {
@@ -508,10 +585,10 @@ protected handleBattlerKilled(event: GameEvent): void {
 /** Initializes the layers in the scene */
 protected initLayers(): void {
 
-    this.addLayer(FinalProjectSceneLayers.UI);
-    this.addLayer(FinalProjectSceneLayers.PAUSE, 10);
-    this.addLayer(FinalProjectSceneLayers.HELP, 11);
-    this.addLayer(FinalProjectSceneLayers.CONTROLS, 11);
+    this.addLayer(Level2SceneLayers.UI);
+    this.addLayer(Level2SceneLayers.PAUSE, 10);
+    this.addLayer(Level2SceneLayers.HELP, 11);
+    this.addLayer(Level2SceneLayers.CONTROLS, 11);
 
     this.addLayer("primary", 5);
 }
@@ -525,7 +602,7 @@ protected initLayers(): void {
 protected initializePlayer(): void {
     const center = this.viewport.getCenter();
     let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-    player.position.set(center.x-300, center.y+300);
+    player.position.set(center.x + 15, center.y + 390);
 
     player.battleGroup = 2;
     
@@ -566,50 +643,19 @@ protected initializePlayer(): void {
  */
 protected initializeNPCs(): void {
 
- 
-    // Get the object data for the blue enemies
-    let blue = this.load.getObject("blue");
-
-    // Initialize the blue enemies
-    for (let i = 0; i < blue.enemies.length; i++) {
-        let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
-        npc.position.set(blue.enemies[i][0], blue.enemies[i][1]);
-        npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
-
-        // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
-        this.healthbars.set(npc.id, healthbar);
-
-        npc.battleGroup = 1
-        npc.speed = 10;
-        npc.health = 1;
-        npc.maxHealth = 1;
-        npc.navkey = "navmesh";
-        npc.scale = new Vec2(0.4,0.4);
-
-        // Give the NPCs their AI
-        npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
-
-        // Play the NPCs "IDLE" animation 
-        npc.animation.play("IDLE");
-
-        this.battlers.push(npc);
-        this.enemies.push(npc);
-    }
-
-    let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
+    let npc = this.add.animatedSprite(NPCActor, "Boss", "primary");
         this.boss = npc;
-        npc.position.set(650,250);
+        npc.position.set(650,150);
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
 
         // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(4, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1
         npc.speed = 10;
-        npc.health = 10;
-        npc.maxHealth = 10;
+        npc.health = 50;
+        npc.maxHealth = 50;
         npc.navkey = "navmesh";
         npc.scale = new Vec2(1,1);
 
@@ -623,7 +669,8 @@ protected initializeNPCs(): void {
         this.battlers.push(npc);
         this.enemies.push(npc);
 
-   
+    // Initialize the blue healers
+    
 
 }
 
@@ -711,20 +758,60 @@ protected initializeNavmesh(): void {
 }
 
 
+    public getBattlers(): Battler[] { return this.battlers; }
 
+    public getWalls(): OrthogonalTilemap { return this.walls; }
 
-    public abstract getBattlers(): Battler[];
+    public getHealthpacks(): Healthpack[] { return this.healthpacks; }
 
-    public abstract getWalls(): OrthogonalTilemap;
+    public getLaserGuns(): LaserGun[] { return this.laserguns; }
 
-    public abstract getHealthpacks(): Healthpack[];
+    /**
+     * Checks if the given target position is visible from the given position.
+     * @param position 
+     * @param target 
+     * @returns 
+     */
+    public isTargetVisible(position: Vec2, target: Vec2): boolean {
 
-    public abstract getLaserGuns(): LaserGun[];
+        // Get the new player location
+        let start = position.clone();
+        let delta = target.clone().sub(start);
 
-    public abstract isTargetVisible(position: Vec2, target: Vec2): boolean;
+        // Iterate through the tilemap region until we find a collision
+        let minX = Math.min(start.x, target.x);
+        let maxX = Math.max(start.x, target.x);
+        let minY = Math.min(start.y, target.y);
+        let maxY = Math.max(start.y, target.y);
 
-    public getShootAudioKey(): string {
-        return this.shootAudioKey;
+        // Get the wall tilemap
+        let walls = this.getWalls();
+
+        let minIndex = walls.getTilemapPosition(minX, minY);
+        let maxIndex = walls.getTilemapPosition(maxX, maxY);
+
+        let tileSize = walls.getScaledTileSize();
+
+        for (let col = minIndex.x; col <= maxIndex.x; col++) {
+            for (let row = minIndex.y; row <= maxIndex.y; row++) {
+                if (walls.isTileCollidable(col, row)) {
+                    // Get the position of this tile
+                    let tilePos = new Vec2(col * tileSize.x + tileSize.x / 2, row * tileSize.y + tileSize.y / 2);
+
+                    // Create a collider for this tile
+                    let collider = new AABB(tilePos, tileSize.scaled(1/4));
+
+                    let hit = collider.intersectSegment(start, delta, Vec2.ZERO);
+
+                    if (hit !== null && start.distanceSqTo(hit.pos) < start.distanceSqTo(target)) {
+                        // We hit a wall, we can't see the player
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+
     }
 
     

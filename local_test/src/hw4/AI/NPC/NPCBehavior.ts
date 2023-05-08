@@ -15,9 +15,6 @@ import NPCAction from "./NPCActions/NPCAction";
  * NPCBehavior class should define some new behavior for an NPCActor. 
  */
 export default abstract class NPCBehavior extends StateMachineGoapAI<NPCAction>  {
-
-    
-
     protected override owner: NPCActor;
 
     public initializeAI(owner: NPCActor, options: Record<string, any>): void {
@@ -53,6 +50,11 @@ export default abstract class NPCBehavior extends StateMachineGoapAI<NPCAction> 
     protected handleLasergunFired(actorId: number, battlerId: number, to: Vec2, from: Vec2): void {
         if (actorId !== this.owner.id && battlerId !== this.owner.battleGroup) {
             this.owner.health -= this.owner.collisionShape.getBoundingRect().intersectSegment(to, from) ? 1 : 0;
+            if(!this.owner.animation.isPlaying("ATTACKING"))
+            {
+                this.owner.animation.playIfNotAlready("TAKING_DAMAGE", false, "IDLE");
+            }
+            
         }
     }
     

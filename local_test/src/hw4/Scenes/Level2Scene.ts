@@ -619,7 +619,7 @@ protected initializePlayer(): void {
     player.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
 
     // Give the player a healthbar
-    let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -2/3)});
+    let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -1/3)});
     this.healthbars.set(player.id, healthbar);
 
     // Give the player PlayerAI
@@ -650,7 +650,7 @@ protected initializeNPCs(): void {
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
 
         // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1
@@ -676,7 +676,7 @@ protected initializeNPCs(): void {
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
 
         // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1
