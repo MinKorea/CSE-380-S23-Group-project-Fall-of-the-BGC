@@ -5,8 +5,10 @@ import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
-import MainHW4Scene from "./MainHW4Scene";
+// import MainHW4Scene from "./MainHW4Scene";
 import MainMenu from "./MainMenu";
+import testScene from "./Level1Scene";
+import Level1Scene from "./Level1Scene";
 
 export const ControlsSceneLayers = {
 	PRIMARY: "PRIMARY",
@@ -68,7 +70,7 @@ export default class ControlsScene extends Scene {
         }
 
         if(Input.isKeyPressed("1")){
-            this.sceneManager.changeToScene(MainHW4Scene);
+            this.sceneManager.changeToScene(Level1Scene);
          }
     }
 
