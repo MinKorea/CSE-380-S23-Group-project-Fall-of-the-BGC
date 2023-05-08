@@ -33,6 +33,12 @@ import Color from "../../Wolfie2D/Utils/Color";
 import Input from "../../Wolfie2D/Input/Input";
 import LevelSelectionScene from "./LevelSelectionScene";
 import GameOver from "./GameOver";
+import Level1Scene from "./Level1Scene";
+import Level2Scene from "./Level2Scene";
+import Level3Scene from "./Level3Scene";
+import Level4Scene from "./Level4Scene";
+import Level5Scene from "./Level5Scene";
+import LastScene from "./LastScene";
 // import testScene from "./Level1Scene";
 
 const BattlerGroups = {
@@ -85,6 +91,8 @@ export default abstract class FinalProjectScene extends Scene {
     protected pauseImage: Sprite;
     protected helpImage: Sprite;
     protected controlsImage: Sprite;
+
+    protected bossLocation: Vec2;
 
     public static PAUSE_KEY = "PAUSE";
     public static PAUSE_PATH = "hw4_assets/sprites/Paused-Screen.png";
@@ -306,6 +314,44 @@ export default abstract class FinalProjectScene extends Scene {
     //  }
     // TODO If input is 2, 3, 4, 5, 6 go to those levels by chaning the scene
 
+    if(Input.isKeyJustPressed("1")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level1Scene);
+     }
+     if(Input.isKeyJustPressed("2")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level2Scene);
+     }
+     if(Input.isKeyJustPressed("3")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level3Scene);
+     }
+     if(Input.isKeyJustPressed("4")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level4Scene);
+     }
+     if(Input.isKeyJustPressed("5")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level5Scene);
+     }
+     if(Input.isKeyJustPressed("6")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(LastScene);
+     }
+
+     if(Input.isKeyJustPressed("t")){
+        // this.viewport.follow(undefined);
+        //this.viewport.setZoomLevel(1);
+        // this.sceneManager.changeToScene(LastScene);
+        this.player[0].position = this.bossLocation;
+     }
+
 }
 
 /**
@@ -343,6 +389,7 @@ public handleEvent(event: GameEvent): void {
             
             this.player[0].freeze(); // Freezes player
             this.player[0].disablePhysics();
+            
 
             for(let i = 0; i < this.enemies.length; i++){ // Freezes enemies 
                 if(this.enemies[i].battlerActive == true){
@@ -605,6 +652,8 @@ protected initializeNPCs(): void {
     let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
         this.boss = npc;
         npc.position.set(650,250);
+        this.bossLocation = new Vec2(650, 250);
+
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
 
         // Give the NPCS their healthbars

@@ -69,9 +69,6 @@ export default class ControlsScene extends Scene {
             this.handleEvent(this.receiver.getNextEvent());
         }
 
-        if(Input.isKeyPressed("1")){
-            this.sceneManager.changeToScene(Level1Scene);
-         }
     }
 
     protected initBackground(): void {

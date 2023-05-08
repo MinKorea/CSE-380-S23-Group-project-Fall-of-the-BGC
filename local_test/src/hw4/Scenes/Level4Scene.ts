@@ -52,6 +52,11 @@ import FinalProjectScene from "./FinalProjectScene";
 import HW4Scene from "./HW4Scene";
 import LevelSelectionScene from "./LevelSelectionScene";
 import MainMenu from "./MainMenu";
+import LastScene from "./LastScene";
+import Level1Scene from "./Level1Scene";
+import Level2Scene from "./Level2Scene";
+import Level3Scene from "./Level3Scene";
+import Level5Scene from "./Level5Scene";
 
 
 const BattlerGroups = {
@@ -105,6 +110,8 @@ export default class Level4Scene extends HW4Scene {
     protected pauseImage: Sprite;
     protected helpImage: Sprite;
     protected controlsImage: Sprite;
+
+    protected bossLocation: Vec2;
 
     public static PAUSE_KEY = "PAUSE";
     public static PAUSE_PATH = "hw4_assets/sprites/Paused-Screen.png";
@@ -369,6 +376,41 @@ export default class Level4Scene extends HW4Scene {
     
     if(Input.isKeyPressed("x")){
         this.viewport.setZoomLevel(3);
+     }
+
+     if(Input.isKeyJustPressed("1")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level1Scene);
+     }
+     if(Input.isKeyJustPressed("2")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level2Scene);
+     }
+     if(Input.isKeyJustPressed("3")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level3Scene);
+     }
+     if(Input.isKeyJustPressed("4")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level4Scene);
+     }
+     if(Input.isKeyJustPressed("5")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level5Scene);
+     }
+     if(Input.isKeyJustPressed("6")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(LastScene);
+     }
+
+     if(Input.isKeyJustPressed("t")){
+        this.player[0].position = this.bossLocation;
      }
 
 
@@ -676,10 +718,11 @@ protected initializeNPCs(): void {
     let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
         this.boss = npc;
         npc.position.set(100,800);
+        this.bossLocation = new Vec2(100, 800);
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
 
         // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1

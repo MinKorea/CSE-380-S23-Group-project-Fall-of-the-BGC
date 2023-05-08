@@ -102,10 +102,6 @@ export default class MainMenu extends Scene {
         while(this.receiver.hasNextEvent()){
             this.handleEvent(this.receiver.getNextEvent());
         }
-
-        if(Input.isKeyPressed("1")){
-            this.sceneManager.changeToScene(Level1Scene);
-         }
     }
 
     protected initBackground(): void {
