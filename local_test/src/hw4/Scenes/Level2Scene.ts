@@ -418,11 +418,12 @@ public handleEvent(event: GameEvent): void {
             this.player[0].disablePhysics();
 
             for(let i = 0; i < this.enemies.length; i++){ // Freezes enemies 
-                this.enemies[i].freeze();
-                this.enemies[i].disablePhysics();
-                this.enemies[i].aiActive = false;
-                // this.enemies[i].clearTarget(); 
-                // TODO Stop enemy from attacking while paused
+                if(this.enemies[i].battlerActive == true){
+                    this.enemies[i].freeze();
+                    this.enemies[i].disablePhysics();
+                    this.enemies[i].aiActive = false;
+                   } 
+    
             }
         
            this.unpausePauseLayer(); 
@@ -445,9 +446,11 @@ public handleEvent(event: GameEvent): void {
             // Input.enableInput();
 
             for(let i = 0; i < this.enemies.length; i++){
-                this.enemies[i].unfreeze();
-                this.enemies[i].enablePhysics();
-                this.enemies[i].aiActive = true;
+                if(this.enemies[i].battlerActive == true){                
+                    this.enemies[i].unfreeze();
+                    this.enemies[i].enablePhysics();
+                    this.enemies[i].aiActive = true;
+                    }
                 // this.enemies[i].setTarget(this.battlers[0]);
             }
 
