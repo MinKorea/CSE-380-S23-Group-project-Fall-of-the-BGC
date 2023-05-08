@@ -82,7 +82,7 @@ export default abstract class NPCAction extends GoapAction {
                     this.lasergun.direction.copy(this.actor.position.dirTo(this.target.position));
                     this.lasergun.laserEnd.copy(this.target.position);
 
-                    // Play the shooting animation for the laser gun
+                    // Play the shooting animation for the laser gun  
                     this.lasergun.playShootAnimation();
 
                     // Send a laser fired event
