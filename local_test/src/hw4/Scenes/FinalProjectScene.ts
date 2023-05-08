@@ -655,7 +655,7 @@ protected initializeNPCs(): void {
 
     let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
         this.boss = npc;
-        npc.position.set(900,100);
+        npc.position.set(650,250);
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
 
         // Give the NPCS their healthbars
