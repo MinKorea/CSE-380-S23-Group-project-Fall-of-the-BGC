@@ -13,6 +13,7 @@ import Level1Scene from "./Level1Scene";
 import testlvl2 from "./Level2Scene";
 import testlvl2Scene from "./Level2Scene";
 import Level2Scene from "./Level2Scene";
+import Level3Scene from "./Level3Scene";
 // import Level2 from "./Level2Scene";
 // import Level2Scene from "./Level2Scene";
 // import Level2Scene from "./Level2Scene";
@@ -178,6 +179,7 @@ export default class LevelSelectionScene extends Scene {
             }
             case "level3": {
                 console.log("Goto lvl3");  
+                this.sceneManager.changeToScene(Level3Scene);
                 // TODO Change scene to lvl 3
                  break;
              }
