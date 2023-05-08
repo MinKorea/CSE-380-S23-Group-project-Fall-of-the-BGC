@@ -43,10 +43,10 @@ import Position from "../GameSystems/Targeting/Position";
 import AstarStrategy from "../Pathfinding/AstarStrategy";
 import GameOver from "./GameOver";
 // import HW4Scene from "./HW4Scene";
-import MainMenu from "./MainMenu";
-import LevelSelectionScene from "./LevelSelectionScene";
-import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
-import testHW4Scene from "./FinalProjectScene";
+// import MainMenu from "./MainMenu";
+// import LevelSelectionScene from "./LevelSelectionScene";
+// import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+// import testHW4Scene from "./FinalProjectScene";
 import FinalProjectScene from "./FinalProjectScene";
 
 
@@ -91,7 +91,7 @@ export default class Level1Scene extends FinalProjectScene {
         this.load.tilemap("level", "hw4_assets/tilemaps/BGCTilemap.json");
 
         // Load the enemy locations
-        this.load.object("red", "hw4_assets/data/enemies/red.json");
+        // this.load.object("red", "hw4_assets/data/enemies/lvl2.json");
         this.load.object("blue", "hw4_assets/data/enemies/blue.json");
 
         // Load the healthpack and lasergun loactions
@@ -116,12 +116,6 @@ export default class Level1Scene extends FinalProjectScene {
         super.startScene();
         
     }
-
-    public unloadScene(): void {
-        // Unload what needs to be unloaded
-    }
-   
-
 
 
     public getBattlers(): Battler[] { return this.battlers; }

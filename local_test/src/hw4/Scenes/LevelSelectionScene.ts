@@ -7,8 +7,15 @@ import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 // import MainHW4Scene from "./MainHW4Scene";
 import MainMenu from "./MainMenu";
-import testScene from "./Level1Scene";
+// import testScene from "./Level1Scene";
 import Level1Scene from "./Level1Scene";
+// import testMainScene from "./testmain";
+import testlvl2 from "./Level2Scene";
+import testlvl2Scene from "./Level2Scene";
+import Level2Scene from "./Level2Scene";
+// import Level2 from "./Level2Scene";
+// import Level2Scene from "./Level2Scene";
+// import Level2Scene from "./Level2Scene";
 
 
 export const LevelSelectionSceneLayers = {
@@ -165,6 +172,7 @@ export default class LevelSelectionScene extends Scene {
             }
             case "level2": {
                 console.log("Goto lvl2");  
+                this.sceneManager.changeToScene(Level2Scene);
                // TODO Change scene to lvl 2
                 break;
             }
