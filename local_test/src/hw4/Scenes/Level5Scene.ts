@@ -152,10 +152,10 @@ export default class Level5Scene extends HW4Scene {
         this.load.spritesheet("player1", "hw4_assets/spritesheets/Warball_001_Lukas.json");
 
         // Load in the enemy sprites
-        this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/Ball_Bat.json");
-        this.load.spritesheet("RedEnemy", "hw4_assets/spritesheets/Ball_Bat.json");
-        this.load.spritesheet("BlueHealer", "hw4_assets/spritesheets/Psyfly.json");
-        this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/Ball_Bat.json");
+        this.load.spritesheet("BlueEnemy", "hw4_assets/spritesheets/Neo.json");
+        this.load.spritesheet("RedEnemy", "hw4_assets/spritesheets/Neo.json");
+        this.load.spritesheet("BlueHealer", "hw4_assets/spritesheets/Neo.json");
+        this.load.spritesheet("RedHealer", "hw4_assets/spritesheets/Neo.json");
 
         // Load the tilemap
         this.load.tilemap("level", "hw4_assets/tilemaps/Level5Tilemap.json");
