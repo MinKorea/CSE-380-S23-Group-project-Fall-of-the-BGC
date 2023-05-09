@@ -10,7 +10,7 @@ import SplashScreen from "./hw4/Scenes/SplashScreen";
 
     // Set up options for our game
     let options = {
-        canvasSize: {x: 1320, y: 880},          // The size of the game x: 1024, y: 1024
+        canvasSize: {x: 1320, y: 880},          // The size of the game x: 1320, y: 880
         clearColor: {r: 0.1, g: 0.1, b: 0.1},   // The color the game clears to
         inputs: [
             {name: PlayerInput.MOVE_UP, keys: ["w"]},

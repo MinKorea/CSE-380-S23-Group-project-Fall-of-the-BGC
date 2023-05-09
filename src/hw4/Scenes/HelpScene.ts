@@ -1,12 +1,16 @@
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Input from "../../Wolfie2D/Input/Input";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
 import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Layer from "../../Wolfie2D/Scene/Layer";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
+import Level1Scene from "./Level1Scene";
+// import MainHW4Scene from "./MainHW4Scene";
 import MainMenu from "./MainMenu";
+// import testScene from "./Level1";
 
 export const HelpSceneLayers = {
 	PRIMARY: "PRIMARY",
@@ -55,7 +59,7 @@ export default class HelpScene extends Scene {
         // const shift2 = <Label>this.add.uiElement(UIElementType.LABEL, "helpMenu", {position: new Vec2(center.x, center.y + 150), text: "while moving faster"});
         // shift2.textColor = Color.WHITE;
 
-        const back = this.add.uiElement(UIElementType.BUTTON, HelpSceneLayers.PRIMARY, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
+        const back = this.add.uiElement(UIElementType.BUTTON, HelpSceneLayers.PRIMARY, {position: new Vec2(center.x - 595, center.y + 415), text: ""});
         back.size.set(200, 50);
         back.borderWidth = 2;
         back.borderColor = Color.TRANSPARENT;
@@ -69,6 +73,7 @@ export default class HelpScene extends Scene {
         while(this.receiver.hasNextEvent()){
             this.handleEvent(this.receiver.getNextEvent());
         }
+
     }
 
     protected initBackground(): void {

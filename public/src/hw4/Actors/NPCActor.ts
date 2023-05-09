@@ -4,7 +4,7 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite"
 import NavigationPath from "../../Wolfie2D/Pathfinding/NavigationPath";
 import { BattlerEvent, HudEvent } from "../Events";
 import Inventory from "../GameSystems/ItemSystem/Inventory";
-import HW4Scene from "../Scenes/HW4Scene";
+// import HW4Scene from "../Scenes/HW4Scene";
 import BasicTargetable from "../GameSystems/Targeting/BasicTargetable";
 import BasicTargeting from "../GameSystems/Targeting/BasicTargeting";
 
@@ -13,12 +13,13 @@ import { TargetableEntity } from "../GameSystems/Targeting/TargetableEntity";
 import { TargetingEntity } from "../GameSystems/Targeting/TargetingEntity";
 import BasicBattler from "../GameSystems/BattleSystem/BasicBattler";
 import Timer from "../../Wolfie2D/Timing/Timer";
+import FinalProjectScene from "../Scenes/FinalProjectScene";
 
 
 export default class NPCActor extends AnimatedSprite implements Battler, TargetingEntity {
 
     /** Override the type of the scene to be the HW3 scene */
-    protected scene: HW4Scene
+    protected scene: FinalProjectScene
 
     // An invincible timer for our NPCs
     protected invincibleTimer: Timer;
@@ -29,7 +30,9 @@ export default class NPCActor extends AnimatedSprite implements Battler, Targeti
     // The NPCs battler object
     protected _battler: Battler;
 
-    protected _targeting: TargetingEntity
+    protected _targeting: TargetingEntity;
+
+    public range: number;
 
     public constructor(sheet: Spritesheet) {
         super(sheet);
@@ -42,7 +45,7 @@ export default class NPCActor extends AnimatedSprite implements Battler, Targeti
     }
 
     /** The TargetingEntity interface */
-
+    
     public clearTarget(): void { this._targeting.clearTarget(); }
     public setTarget(targetable: TargetableEntity): void { this._targeting.setTarget(targetable); }
     public hasTarget(): boolean { return this._targeting.hasTarget(); }
@@ -78,15 +81,24 @@ export default class NPCActor extends AnimatedSprite implements Battler, Targeti
     public set health(health: number) { 
         this.battler.health = health; 
         if (this.health <= 0 && this.battlerActive) {
+
+            
+
             this.emitter.fireEvent(BattlerEvent.BATTLER_KILLED, {id: this.id});
+
+            // this.animation.play("DYING", false, "DEAD");
+            // if(!this.animation.isPlaying("DYING"))
+            // {
+                
+            // }
         }
     }
 
     public get speed(): number { return this.battler.speed; }
     public set speed(speed: number) { this.battler.speed = speed; }
 
-    public override setScene(scene: HW4Scene): void { this.scene = scene; }
-    public override getScene(): HW4Scene { return this.scene; }
+    public override setScene(scene: FinalProjectScene): void { this.scene = scene; }
+    public override getScene(): FinalProjectScene { return this.scene; }
 
     public get navkey(): string { return this._navkey; }
     public set navkey(navkey: string) { this._navkey = navkey; }

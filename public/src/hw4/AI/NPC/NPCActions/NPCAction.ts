@@ -13,6 +13,7 @@ import { ItemEvent } from "../../../Events";
 import { GraphicType } from "../../../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import Line from "../../../../Wolfie2D/Nodes/Graphics/Line";
 import Vec2 from "../../../../Wolfie2D/DataTypes/Vec2";
+import Viewport from "../../../../Wolfie2D/SceneGraph/Viewport";
 /**
  * An abstract GoapAction for an NPC. All NPC actions consist of doing three things:
  * 
@@ -55,7 +56,7 @@ export default abstract class NPCAction extends GoapAction {
         this.target = this.targetFinder.find(this.targets);
 
         // If we found a target, set the NPCs target to the target and find a path to the target
-        if (this.target !== null) {
+        if (this.target !== null && this.actor.position.distanceTo(this.target.position) < 200) {
             // Set the actors current target to be the target for this action
             this.actor.setTarget(this.target);
             // Construct a path from the actor to the target
@@ -64,16 +65,17 @@ export default abstract class NPCAction extends GoapAction {
     }
 
     public update(deltaT: number): void {
+
         if (this.target !== null && this.path !== null && !this.path.isDone()) {
             
-            if (this.actor.atTarget() || this.actor.position.distanceTo(this.target.position) < 100) {
+            if (this.actor.atTarget() || this.actor.position.distanceTo(this.target.position) < 50) {
                 // this.performAction(this.target);
 
                 let sprite = this.actor.getScene().add.sprite("laserGun", "primary");
                 let line = <Line>this.actor.getScene().add.graphic(GraphicType.LINE, "primary", {start: Vec2.ZERO, end: Vec2.ZERO});
                 this.lasergun = LaserGun.create(sprite, line);
 
-                this.timer.isStopped() ? console.log("Weapon cooling down!") : console.log("Weapon ready!");
+                // this.timer.isStopped() ? console.log("Weapon cooling down!") : console.log("Weapon ready!");
                 // If the lasergun is not null and the lasergun is still in the actors inventory; shoot the lasergun
                 if (this.timer.isStopped() && this.lasergun !== null) {
                     // Set the start, direction, and end position to shoot the laser gun
@@ -81,9 +83,9 @@ export default abstract class NPCAction extends GoapAction {
                     this.lasergun.direction.copy(this.actor.position.dirTo(this.target.position));
                     this.lasergun.laserEnd.copy(this.target.position);
 
-                    // Play the shooting animation for the laser gun
+                    // Play the shooting animation for the laser gun  
                     this.lasergun.playShootAnimation();
-
+                    this.actor.animation.playIfNotAlready("ATTACKING", false);
                     // Send a laser fired event
                     this.emitter.fireEvent(ItemEvent.LASERGUN_FIRED, {
                         actorId: this.actor.id,
@@ -93,7 +95,19 @@ export default abstract class NPCAction extends GoapAction {
 
                     this.timer.start();
                 }
-            } else {
+            } else 
+            {
+                if(!this.actor.animation.isPlaying("ATTACKING"))    
+                {
+                    this.actor.unfreeze();
+                    this.actor.animation.playIfNotAlready("IDLE", true);
+                }
+                else    this.actor.freeze();
+                if(this.actor.collidedWithTilemap)  
+                {
+                    this.path = this.actor.getPath(this.actor.position, this.target.position);
+                }
+
                 this.actor.moveOnPath(this.actor.speed*deltaT*25, this.path);
             }
         } 
@@ -103,14 +117,14 @@ export default abstract class NPCAction extends GoapAction {
             this.target = this.targetFinder.find(this.targets);
 
             // If we found a target, set the NPCs target to the target and find a path to the target
-            if (this.target !== null) {
+            if (this.target !== null && this.actor.position.distanceTo(this.target.position) < 200) {
                 // Set the actors current target to be the target for this action
                 this.actor.setTarget(this.target);
                 // Construct a path from the actor to the target
                 this.path = this.actor.getPath(this.actor.position, this.target.position);
             }
 
-            this.finished();
+            // this.finished();
         }
     }
 
