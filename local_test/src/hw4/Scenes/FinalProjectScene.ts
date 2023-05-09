@@ -719,8 +719,8 @@ protected initializeNPCs(): void {
 
     let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
         this.boss = npc;
-        npc.position.set(650,250);
-        this.bossLocation = new Vec2(650, 250);
+        npc.position.set(450,150);
+        this.bossLocation = new Vec2(450, 150);
 
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(12, 12)), null, false);
 
