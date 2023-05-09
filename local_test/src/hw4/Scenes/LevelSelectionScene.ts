@@ -14,6 +14,9 @@ import testlvl2 from "./Level2Scene";
 import testlvl2Scene from "./Level2Scene";
 import Level2Scene from "./Level2Scene";
 import LastScene from "./LastScene";
+import Level3Scene from "./Level3Scene";
+import Level4Scene from "./Level4Scene";
+import Level5Scene from "./Level5Scene";
 // import Level2 from "./Level2Scene";
 // import Level2Scene from "./Level2Scene";
 // import Level2Scene from "./Level2Scene";
@@ -179,16 +182,19 @@ export default class LevelSelectionScene extends Scene {
             }
             case "level3": {
                 console.log("Goto lvl3");  
+                this.sceneManager.changeToScene(Level3Scene);
                 // TODO Change scene to lvl 3
                  break;
              }
              case "level4": {
-                console.log("Goto lvl4");  
+                console.log("Goto lvl4");
+                this.sceneManager.changeToScene(Level4Scene);  
                 // TODO Change scene to lvl 4
                  break;
              }
              case "level5": {
                 console.log("Goto lvl5");  
+                this.sceneManager.changeToScene(Level5Scene);  
                 // TODO Change scene to lvl 5
                  break;
              }

@@ -10,6 +10,12 @@ export default abstract class HW4Scene extends Scene {
 
  protected shootAudioKey: string;
 
+ protected hitAudioKey: string;
+
+ protected dyingAudioKey: string;
+
+ protected levelMusicKey: string;
+
     public abstract getBattlers(): Battler[];
 
     public abstract getWalls(): OrthogonalTilemap;
@@ -23,5 +29,13 @@ export default abstract class HW4Scene extends Scene {
 
     public getShootAudioKey(): string {
         return this.shootAudioKey;
+    }
+
+    public getHitAudioKey(): string {
+        return this.hitAudioKey;
+    }
+
+    public getDyingAudioKey(): string {
+        return this.dyingAudioKey;
     }
 }

@@ -27,6 +27,8 @@ export default abstract class PlayerState extends State {
     protected owner: PlayerActor;
     protected weapon: PlayerWeapon;
 
+    protected bool = true;
+
     public constructor(parent: PlayerAI, owner: PlayerActor) {
         super(parent);
         this.owner = owner;
@@ -51,6 +53,14 @@ export default abstract class PlayerState extends State {
 
         if(this.parent.owner.health <= 0)
         {
+            console.log("Playing dying audio");
+
+            if(this.bool == true){
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.owner.getScene().getDyingAudioKey(), loop: false, holdReference: false});
+                this.bool = false;
+            }
+
+           
             this.parent.owner.animation.playIfNotAlready("DYING",false, "DEAD");
             this.parent.owner.freeze();
             //this.parent.owner.animation.playIfNotAlready("DEAD",false, PlayerStateType.DEAD);
@@ -94,4 +104,5 @@ import Invincible from "./Invincible";
 import Moving from "./Moving";
 import Dead from "./Dead";
 import PlayerActor from "../../../Actors/PlayerActor";
+import { GameEventType } from "../../../../Wolfie2D/Events/GameEventType";
 export { Idle, Invincible, Moving, Dead} 

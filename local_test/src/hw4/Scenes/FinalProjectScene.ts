@@ -33,6 +33,13 @@ import Color from "../../Wolfie2D/Utils/Color";
 import Input from "../../Wolfie2D/Input/Input";
 import LevelSelectionScene from "./LevelSelectionScene";
 import GameOver from "./GameOver";
+import Level1Scene from "./Level1Scene";
+import Level2Scene from "./Level2Scene";
+import Level3Scene from "./Level3Scene";
+import Level4Scene from "./Level4Scene";
+import Level5Scene from "./Level5Scene";
+import LastScene from "./LastScene";
+import testMenu from "./MainMenu";
 // import testScene from "./Level1Scene";
 
 const BattlerGroups = {
@@ -46,7 +53,8 @@ export const FinalProjectSceneLayers = {
 	UI: "UI",
     PAUSE: "PAUSE",
     CONTROLS: "CONTROLS",
-    HELP: "HELP"
+    HELP: "HELP",
+    COMPLETE: "COMPLETE"
 } as const;
 
 
@@ -67,6 +75,10 @@ export default abstract class FinalProjectScene extends Scene {
     
     protected shootAudioKey: string;
 
+    protected hitAudioKey: string;
+
+    protected dyingAudioKey: string;
+
     //private zoomBool = false;
 
     // protected shootAudioKey: string;
@@ -85,6 +97,9 @@ export default abstract class FinalProjectScene extends Scene {
     protected pauseImage: Sprite;
     protected helpImage: Sprite;
     protected controlsImage: Sprite;
+    protected completeImage: Sprite;
+
+    protected bossLocation: Vec2;
 
     public static PAUSE_KEY = "PAUSE";
     public static PAUSE_PATH = "hw4_assets/sprites/Paused-Screen.png";
@@ -95,8 +110,9 @@ export default abstract class FinalProjectScene extends Scene {
 
     public static CONTROLS_KEY = "CONTROLS"
     public static CONTROLS_PATH = "hw4_assets/sprites/Controls-Screen.png"
-   
 
+    public static COMPLETE_KEY = "COMPLETE"
+    public static COMPLETE_PATH = "hw4_assets/sprites/Level-Complete.png"
 
     
     public startScene() {
@@ -169,28 +185,28 @@ export default abstract class FinalProjectScene extends Scene {
         this.pauseImage.position.copy(this.viewport.getCenter());
         // this.pauseImage.alpha = 0.7;
 
-        const unpause = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 200), text: ""});
+        const unpause = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x - 5, center.y - 210), text: ""});
         unpause.size.set(400, 100);
         unpause.borderWidth = 2;
         unpause.borderColor = Color.TRANSPARENT;
         unpause.backgroundColor = Color.TRANSPARENT;
         unpause.onClickEventId = "unpause";
 
-        const mainMenu = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y + 233), text: ""});
+        const mainMenu = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x - 5, center.y + 223), text: ""});
         mainMenu.size.set(400, 100);
         mainMenu.borderWidth = 2;
         mainMenu.borderColor = Color.TRANSPARENT;
         mainMenu.backgroundColor = Color.TRANSPARENT;
         mainMenu.onClickEventId = "mainmenu";
 
-        const controlsButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y - 55), text: ""});
+        const controlsButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x - 5, center.y - 65), text: ""});
         controlsButton.size.set(400, 100);
         controlsButton.borderWidth = 2;
         controlsButton.borderColor = Color.TRANSPARENT;
         controlsButton.backgroundColor = Color.TRANSPARENT;
         controlsButton.onClickEventId = "controls";
 
-        const helpButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x, center.y + 90), text: ""});
+        const helpButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.PAUSE, {position: new Vec2(center.x - 5, center.y + 80), text: ""});
         helpButton.size.set(400, 100)
         helpButton.borderWidth = 2;
         helpButton.borderColor = Color.TRANSPARENT;
@@ -208,7 +224,7 @@ export default abstract class FinalProjectScene extends Scene {
         this.controlsImage.position.copy(this.viewport.getCenter());
         // this.controlsImage.alpha = 0.5;
 
-        const controlsBackButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.CONTROLS, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
+        const controlsBackButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.CONTROLS, {position: new Vec2(center.x - 595, center.y + 415), text: ""});
         controlsBackButton.size.set(200, 50);
         controlsBackButton.borderWidth = 2;
         controlsBackButton.borderColor = Color.TRANSPARENT;
@@ -225,7 +241,7 @@ export default abstract class FinalProjectScene extends Scene {
         this.helpImage.position.copy(this.viewport.getCenter());
         // this.helpImage.alpha = 0.5;
 
-        const helpBackButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.HELP, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
+        const helpBackButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.HELP, {position: new Vec2(center.x - 595, center.y + 415), text: ""});
         helpBackButton.size.set(200, 50);
         helpBackButton.borderWidth = 2;
         helpBackButton.borderColor = Color.TRANSPARENT;
@@ -234,6 +250,28 @@ export default abstract class FinalProjectScene extends Scene {
 
         helpLayer.setPaused(true);
         helpLayer.setHidden(true);
+
+
+        // Complete Layer
+
+        let completeLayer = this.getLayer("COMPLETE");
+
+        this.completeImage = this.add.sprite(FinalProjectScene.COMPLETE_KEY, completeLayer.getName());
+        this.completeImage.position.copy(this.viewport.getCenter());
+
+        const completeButton = this.add.uiElement(UIElementType.BUTTON, FinalProjectSceneLayers.COMPLETE, {position: new Vec2(center.x, center.y + 475), text: ""});
+        completeButton.size.set(1320, 2000);
+        completeButton.borderWidth = 2;
+        completeButton.borderColor = Color.WHITE;
+        completeButton.backgroundColor = Color.TRANSPARENT;
+        completeButton.onClickEventId = "nextlvl";
+
+        completeLayer.setPaused(true);
+        completeLayer.setHidden(true);
+
+
+
+
 
 
         // this.pauseMenu = unpause;
@@ -254,6 +292,7 @@ export default abstract class FinalProjectScene extends Scene {
         this.receiver.subscribe("help");
         this.receiver.subscribe("backcontrols");
         this.receiver.subscribe("helpcontrols");
+        this.receiver.subscribe("nextlvl");
 
         // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
     }
@@ -279,10 +318,21 @@ export default abstract class FinalProjectScene extends Scene {
         this.handleEvent(v);
     }
     if (this.boss.health <= 0) {
-        this.viewport.follow(undefined);
         this.viewport.setZoomLevel(1);
-        this.sceneManager.changeToScene(LevelSelectionScene);
-        // this.viewport.setZoomLevel(1);
+        this.unpauseCompleteLayer();
+
+        this.player[0].freeze(); // Freezes player
+        this.player[0].disablePhysics();
+        this.player[0].aiActive = false;
+        
+        for(let i = 0; i < this.enemies.length; i++){ // Freezes enemies 
+            if(this.enemies[i].battlerActive == true){
+                this.enemies[i].freeze();
+                this.enemies[i].disablePhysics();
+                this.enemies[i].aiActive = false;
+               } 
+
+        }
     }
     let pauseLayer = this.getLayer("PAUSE");
    
@@ -305,6 +355,45 @@ export default abstract class FinalProjectScene extends Scene {
     //     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
     //  }
     // TODO If input is 2, 3, 4, 5, 6 go to those levels by chaning the scene
+
+    if(Input.isKeyJustPressed("1")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level1Scene);
+     }
+     if(Input.isKeyJustPressed("2")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level2Scene);
+     }
+     if(Input.isKeyJustPressed("3")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level3Scene);
+     }
+     if(Input.isKeyJustPressed("4")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level4Scene);
+     }
+     if(Input.isKeyJustPressed("5")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(Level5Scene);
+     }
+     if(Input.isKeyJustPressed("6")){
+        this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(LastScene);
+     }
+
+     if(Input.isKeyJustPressed("t")){
+        this.player[0].position = this.bossLocation;
+     }
+
+    
+
+
 
 }
 
@@ -343,11 +432,15 @@ public handleEvent(event: GameEvent): void {
             
             this.player[0].freeze(); // Freezes player
             this.player[0].disablePhysics();
+            
 
             for(let i = 0; i < this.enemies.length; i++){ // Freezes enemies 
-                this.enemies[i].freeze();
-                this.enemies[i].disablePhysics();
-                this.enemies[i].aiActive = false;
+                if(this.enemies[i].battlerActive == true){
+                    this.enemies[i].freeze();
+                    this.enemies[i].disablePhysics();
+                    this.enemies[i].aiActive = false;
+                   } 
+    
                 // this.enemies[i].clearTarget(); 
                 // TODO Stop enemy from attacking while paused
             }
@@ -372,9 +465,11 @@ public handleEvent(event: GameEvent): void {
             // Input.enableInput();
 
             for(let i = 0; i < this.enemies.length; i++){
-                this.enemies[i].unfreeze();
-                this.enemies[i].enablePhysics();
-                this.enemies[i].aiActive = true;
+                if(this.enemies[i].battlerActive == true){                
+                    this.enemies[i].unfreeze();
+                    this.enemies[i].enablePhysics();
+                    this.enemies[i].aiActive = true;
+                    }
                 // this.enemies[i].setTarget(this.battlers[0]);
             }
 
@@ -413,6 +508,13 @@ public handleEvent(event: GameEvent): void {
             this.pauseHelpLayer();
             break;
         }
+        case "nextlvl": {
+            this.viewport.follow(undefined);
+            this.viewport.setZoomLevel(1);
+            this.sceneManager.changeToScene(Level2Scene);
+            break;
+        }
+
         default: {
             throw new Error(`Unhandled event type "${event.type}" caught in HW3Scene event handler`);
         }
@@ -479,6 +581,18 @@ protected unpauseHelpLayer(): void {
     helpLayer.setHidden(false);
 }
 
+protected pauseCompleteLayer(): void {
+    let completeLayer = this.getLayer("COMPLETE");
+    completeLayer.setPaused(true);
+    completeLayer.setHidden(true);
+}
+
+protected unpauseCompleteLayer(): void {
+    let completeLayer = this.getLayer("COMPLETE");
+    completeLayer.setPaused(false);
+    completeLayer.setHidden(false);
+}
+
 
 protected handleItemRequest(node: GameNode, inventory: Inventory): void {
     let items: Item[] = new Array<Item>(...this.healthpacks, ...this.laserguns).filter((item: Item) => {
@@ -512,6 +626,7 @@ protected initLayers(): void {
     this.addLayer(FinalProjectSceneLayers.PAUSE, 10);
     this.addLayer(FinalProjectSceneLayers.HELP, 11);
     this.addLayer(FinalProjectSceneLayers.CONTROLS, 11);
+    this.addLayer(FinalProjectSceneLayers.COMPLETE, 12);
 
     this.addLayer("primary", 5);
 }
@@ -546,7 +661,7 @@ protected initializePlayer(): void {
     player.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
 
     // Give the player a healthbar
-    let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -2/3)});
+    let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -1/3)});
     this.healthbars.set(player.id, healthbar);
 
     // Give the player PlayerAI
@@ -577,7 +692,7 @@ protected initializeNPCs(): void {
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)), null, false);
 
         // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1
@@ -600,10 +715,12 @@ protected initializeNPCs(): void {
     let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
         this.boss = npc;
         npc.position.set(650,250);
+        this.bossLocation = new Vec2(650, 250);
+
         npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
 
         // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(1/2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1
@@ -725,6 +842,14 @@ protected initializeNavmesh(): void {
 
     public getShootAudioKey(): string {
         return this.shootAudioKey;
+    }
+
+    public getHitAudioKey(): string {
+        return this.hitAudioKey;
+    }
+
+    public getDyingAudioKey(): string {
+        return this.dyingAudioKey;
     }
 
     

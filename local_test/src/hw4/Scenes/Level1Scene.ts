@@ -56,6 +56,12 @@ export default class Level1Scene extends FinalProjectScene {
     public static SHOOT_AUDIO_KEY = "PLAYER_SHOOT"
     public static SHOOT_AUDIO_PATH = "hw4_assets/sounds/laserShoot.wav"
 
+    public static HIT_AUDIO_KEY = "PLAYER_HIT"
+    public static HIT_AUDIO_PATH = "hw4_assets/sounds/hit.wav"
+
+    public static DYING_AUDIO_KEY = "PLAYER_DYING"
+    public static DYING_AUDIO_PATH = "hw4_assets/sounds/dying.wav"
+
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -70,6 +76,11 @@ export default class Level1Scene extends FinalProjectScene {
         this.healthpacks = new Array<Healthpack>();
 
         this.shootAudioKey = Level1Scene.SHOOT_AUDIO_KEY;
+
+        this.hitAudioKey = Level1Scene.HIT_AUDIO_KEY;
+
+        this.dyingAudioKey = Level1Scene.DYING_AUDIO_KEY;
+        
     }
 
     /**
@@ -105,8 +116,11 @@ export default class Level1Scene extends FinalProjectScene {
         this.load.image(FinalProjectScene.PAUSE_KEY, FinalProjectScene.PAUSE_PATH);
         this.load.image(FinalProjectScene.HELP_KEY, FinalProjectScene.HELP_PATH);
         this.load.image(FinalProjectScene.CONTROLS_KEY, FinalProjectScene.CONTROLS_PATH);
+        this.load.image(FinalProjectScene.COMPLETE_KEY, FinalProjectScene.COMPLETE_PATH);
 
         this.load.audio(this.shootAudioKey, Level1Scene.SHOOT_AUDIO_PATH);
+        this.load.audio(this.hitAudioKey, Level1Scene.HIT_AUDIO_PATH);
+        this.load.audio(this.dyingAudioKey, Level1Scene.DYING_AUDIO_PATH);
 
     }
     /**
