@@ -76,6 +76,8 @@ export default abstract class FinalProjectScene extends Scene {
 
     protected hitAudioKey: string;
 
+    protected dyingAudioKey: string;
+
     //private zoomBool = false;
 
     // protected shootAudioKey: string;
@@ -843,6 +845,10 @@ protected initializeNavmesh(): void {
 
     public getHitAudioKey(): string {
         return this.hitAudioKey;
+    }
+
+    public getDyingAudioKey(): string {
+        return this.dyingAudioKey;
     }
 
     

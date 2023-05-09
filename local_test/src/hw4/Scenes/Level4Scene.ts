@@ -136,6 +136,10 @@ export default class Level4Scene extends HW4Scene {
     public static HIT_AUDIO_KEY = "PLAYER_HIT"
     public static HIT_AUDIO_PATH = "hw4_assets/sounds/hit.wav"
 
+    public static DYING_AUDIO_KEY = "PLAYER_DYING"
+    public static DYING_AUDIO_PATH = "hw4_assets/sounds/dying.wav"
+
+
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -151,6 +155,7 @@ export default class Level4Scene extends HW4Scene {
 
         this.shootAudioKey = Level4Scene.SHOOT_AUDIO_KEY;
         this.hitAudioKey = Level4Scene.HIT_AUDIO_KEY;
+        this.dyingAudioKey = Level4Scene.DYING_AUDIO_KEY;
     }
 
     /**
@@ -190,6 +195,7 @@ export default class Level4Scene extends HW4Scene {
 
         this.load.audio(this.shootAudioKey, Level4Scene.SHOOT_AUDIO_PATH);
         this.load.audio(this.hitAudioKey, Level4Scene.HIT_AUDIO_PATH);
+        this.load.audio(this.dyingAudioKey, Level4Scene.DYING_AUDIO_PATH);
 
     }
     
