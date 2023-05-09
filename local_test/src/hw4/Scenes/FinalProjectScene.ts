@@ -645,7 +645,7 @@ protected initLayers(): void {
 protected initializePlayer(): void {
     const center = this.viewport.getCenter();
     let player = this.add.animatedSprite(PlayerActor, "player1", "primary");
-    player.position.set(center.x-300, center.y+300);
+    player.position.set(center.x-350, center.y+300);
 
     player.battleGroup = 2;
     
