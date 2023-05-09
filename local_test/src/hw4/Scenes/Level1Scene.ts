@@ -105,6 +105,7 @@ export default class Level1Scene extends FinalProjectScene {
         this.load.image(FinalProjectScene.PAUSE_KEY, FinalProjectScene.PAUSE_PATH);
         this.load.image(FinalProjectScene.HELP_KEY, FinalProjectScene.HELP_PATH);
         this.load.image(FinalProjectScene.CONTROLS_KEY, FinalProjectScene.CONTROLS_PATH);
+        this.load.image(FinalProjectScene.COMPLETE_KEY, FinalProjectScene.COMPLETE_PATH);
 
         this.load.audio(this.shootAudioKey, Level1Scene.SHOOT_AUDIO_PATH);
 

@@ -54,7 +54,7 @@ export default class ControlsScene extends Scene {
         // const shift2 = <Label>this.add.uiElement(UIElementType.LABEL, "helpMenu", {position: new Vec2(center.x, center.y + 150), text: "while moving faster"});
         // shift2.textColor = Color.WHITE;
 
-        const back = this.add.uiElement(UIElementType.BUTTON, ControlsSceneLayers.PRIMARY, {position: new Vec2(center.x - 600, center.y + 405), text: ""});
+        const back = this.add.uiElement(UIElementType.BUTTON, ControlsSceneLayers.PRIMARY, {position: new Vec2(center.x - 595, center.y + 415), text: ""});
         back.size.set(200, 50);
         back.borderWidth = 2;
         back.borderColor = Color.TRANSPARENT;
