@@ -734,7 +734,7 @@ protected initializePlayer(): void {
 
     player.health = 10;
     player.maxHealth = 10;
-    player.scale = new Vec2(0.4, 0.4); // Scales player 
+    player.scale = new Vec2(0.3, 0.3); // Scales player 
 
     player.inventory.onChange = ItemEvent.INVENTORY_CHANGED
     // this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
@@ -745,7 +745,7 @@ protected initializePlayer(): void {
     // });
 
     // Give the player physics
-    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
+    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(12, 12)));
 
     // Give the player a healthbar
     let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -1/3)});
@@ -769,31 +769,31 @@ protected initializePlayer(): void {
 protected initializeNPCs(): void {
 
     let npc = this.add.animatedSprite(NPCActor, "Boss", "primary");
-        this.boss = npc;
-        npc.position.set(650,150);
-        this.bossLocation = new Vec2(650, 150);
-        npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+    this.boss = npc;
+    npc.position.set(650,150);
+    this.bossLocation = new Vec2(650, 150);
+    npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(12, 12)), Vec2.ZERO.add(new Vec2(0, -30)), false);
 
-        // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(4, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
-        this.healthbars.set(npc.id, healthbar);
+    // Give the NPCS their healthbars
+    let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(4, 1/4), offset: npc.size.clone().scaled(0, -1/2)});
+    this.healthbars.set(npc.id, healthbar);
 
-        npc.battleGroup = 1
-        npc.speed = 10;
-        npc.health = 50;
-        npc.maxHealth = 50;
-        npc.navkey = "navmesh";
-        npc.scale = new Vec2(1,1);
+    npc.battleGroup = 1
+    npc.speed = 14;
+    npc.health = 50;
+    npc.maxHealth = 50;
+    npc.navkey = "navmesh";
+    npc.scale = new Vec2(0.8,0.8);
 
 
-        // Give the NPCs their AI
-        npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
+    // Give the NPCs their AI
+    npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
 
-        // Play the NPCs "IDLE" animation 
-        npc.animation.play("IDLE");
+    // Play the NPCs "IDLE" animation 
+    npc.animation.play("IDLE");
 
-        this.battlers.push(npc);
-        this.enemies.push(npc);
+    this.battlers.push(npc);
+    this.enemies.push(npc);
 
     // Initialize the blue healers
     

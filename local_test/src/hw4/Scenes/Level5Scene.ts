@@ -727,7 +727,7 @@ protected initializePlayer(): void {
 
     player.health = 10;
     player.maxHealth = 10;
-    player.scale = new Vec2(0.4, 0.4); // Scales player 
+    player.scale = new Vec2(0.3, 0.3); // Scales player 
 
     player.inventory.onChange = ItemEvent.INVENTORY_CHANGED
     // this.inventoryHud = new InventoryHUD(this, player.inventory, "inventorySlot", {
@@ -738,7 +738,7 @@ protected initializePlayer(): void {
     // });
 
     // Give the player physics
-    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
+    player.addPhysics(new AABB(Vec2.ZERO, new Vec2(12, 12)));
 
     // Give the player a healthbar
      let healthbar = new HealthbarHUD(this, player, "primary", {size: player.size.clone().scaled(1, 1/4), offset: player.size.clone().scaled(0, -1/3)});
@@ -776,11 +776,11 @@ protected initializeNPCs(): void {
         this.healthbars.set(npc.id, healthbar);
 
         npc.battleGroup = 1
-        npc.speed = 10;
+        npc.speed = 8.5;
         npc.health = 4;
         npc.maxHealth = 4;
         npc.navkey = "navmesh";
-        npc.scale = new Vec2(0.4,0.4);
+        npc.scale = new Vec2(0.3,0.3);
 
         // Give the NPCs their AI
         npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
@@ -793,32 +793,32 @@ protected initializeNPCs(): void {
     }
 
     let npc = this.add.animatedSprite(NPCActor, "BlueEnemy", "primary");
-        this.boss = npc;
-        const center = this.viewport.getCenter();
-        npc.position.set(center.x, center.y);
-        this.bossLocation = new Vec2(center.x, center.y);
-        npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(32, 32)), null, false);
+    this.boss = npc;
+    const center = this.viewport.getCenter();
+    npc.position.set(center.x, center.y);
+    this.bossLocation = new Vec2(center.x, center.y);
+    npc.addPhysics(new AABB(Vec2.ZERO, new Vec2(12, 12)), null, false);
 
-        // Give the NPCS their healthbars
-        let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
-        this.healthbars.set(npc.id, healthbar);
+    // Give the NPCS their healthbars
+    let healthbar = new HealthbarHUD(this, npc, "primary", {size: npc.size.clone().scaled(2, 1/4), offset: npc.size.clone().scaled(0, -1/3)});
+    this.healthbars.set(npc.id, healthbar);
 
-        npc.battleGroup = 1
-        npc.speed = 10;
-        npc.health = 25;
-        npc.maxHealth = 25;
-        npc.navkey = "navmesh";
-        npc.scale = new Vec2(1,1);
+    npc.battleGroup = 1
+    npc.speed = 9.5;
+    npc.health = 25;
+    npc.maxHealth = 25;
+    npc.navkey = "navmesh";
+    npc.scale = new Vec2(0.5, 0.5);
 
 
-        // Give the NPCs their AI
-        npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
+    // Give the NPCs their AI
+    npc.addAI(GuardBehavior, {target: this.battlers[0], range: 0});
 
-        // Play the NPCs "IDLE" animation 
-        npc.animation.play("IDLE");
+    // Play the NPCs "IDLE" animation 
+    npc.animation.play("IDLE");
 
-        this.battlers.push(npc);
-        this.enemies.push(npc);
+    this.battlers.push(npc);
+    this.enemies.push(npc);
 
     // Initialize the blue healers
     

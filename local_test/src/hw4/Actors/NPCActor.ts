@@ -81,6 +81,7 @@ export default class NPCActor extends AnimatedSprite implements Battler, Targeti
     public set health(health: number) { 
         this.battler.health = health; 
         if (this.health <= 0 && this.battlerActive) {
+
             
 
             this.emitter.fireEvent(BattlerEvent.BATTLER_KILLED, {id: this.id});

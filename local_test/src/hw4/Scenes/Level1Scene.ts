@@ -92,7 +92,6 @@ export default class Level1Scene extends FinalProjectScene {
      */
     public override loadScene() {
 
-
         // Load the player and enemy spritesheets
         this.load.spritesheet("player1", "hw4_assets/spritesheets/Warball_001_Lukas.json");
 

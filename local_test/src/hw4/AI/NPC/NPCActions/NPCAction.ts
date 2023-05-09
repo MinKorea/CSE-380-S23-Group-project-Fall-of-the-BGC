@@ -75,7 +75,7 @@ export default abstract class NPCAction extends GoapAction {
                 let line = <Line>this.actor.getScene().add.graphic(GraphicType.LINE, "primary", {start: Vec2.ZERO, end: Vec2.ZERO});
                 this.lasergun = LaserGun.create(sprite, line);
 
-                this.timer.isStopped() ? console.log("Weapon cooling down!") : console.log("Weapon ready!");
+                // this.timer.isStopped() ? console.log("Weapon cooling down!") : console.log("Weapon ready!");
                 // If the lasergun is not null and the lasergun is still in the actors inventory; shoot the lasergun
                 if (this.timer.isStopped() && this.lasergun !== null) {
                     // Set the start, direction, and end position to shoot the laser gun
@@ -97,9 +97,18 @@ export default abstract class NPCAction extends GoapAction {
                 }
             } else 
             {
-                if(!this.actor.animation.isPlaying("ATTACKING"))    this.actor.animation.playIfNotAlready("IDLE", true);
+                if(!this.actor.animation.isPlaying("ATTACKING"))    
+                {
+                    this.actor.unfreeze();
+                    this.actor.animation.playIfNotAlready("IDLE", true);
+                }
+                else    this.actor.freeze();
+                if(this.actor.collidedWithTilemap)  
+                {
+                    this.path = this.actor.getPath(this.actor.position, this.target.position);
+                }
+
                 this.actor.moveOnPath(this.actor.speed*deltaT*25, this.path);
-                if(this.actor.collidedWithTilemap)  this.path = this.actor.getPath(this.actor.position, this.target.position);
             }
         } 
         else 

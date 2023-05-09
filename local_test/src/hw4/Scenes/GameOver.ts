@@ -18,8 +18,7 @@ export default class GameOver extends Scene {
 
     startScene() {
         const center = this.viewport.getCenter();
-
-        this.viewport.setZoomLevel(1);
+        this.viewport.setZoomLevel(1);  
 
         this.addUILayer("primary");
 
