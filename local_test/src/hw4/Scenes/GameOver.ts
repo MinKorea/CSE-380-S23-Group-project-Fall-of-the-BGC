@@ -6,6 +6,7 @@ import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import MainMenu from "./MainMenu";
+import testMenu from "./MainMenu";
 
 export default class GameOver extends Scene {
 

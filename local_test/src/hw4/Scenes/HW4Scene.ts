@@ -14,6 +14,8 @@ export default abstract class HW4Scene extends Scene {
 
  protected dyingAudioKey: string;
 
+ protected levelMusicKey: string;
+
     public abstract getBattlers(): Battler[];
 
     public abstract getWalls(): OrthogonalTilemap;

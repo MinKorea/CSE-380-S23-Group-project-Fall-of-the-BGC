@@ -57,6 +57,7 @@ import Level1Scene from "./Level1Scene";
 import Level2Scene from "./Level2Scene";
 import Level3Scene from "./Level3Scene";
 import Level5Scene from "./Level5Scene";
+import testMenu from "./MainMenu";
 
 
 const BattlerGroups = {
