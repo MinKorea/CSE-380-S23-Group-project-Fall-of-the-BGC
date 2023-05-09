@@ -1,0 +1,151 @@
+{
+	"name": "Slime",
+	"spriteSheetImage": "Slime.png",
+	"spriteWidth": 128,
+	"spriteHeight": 128,
+	"leftBuffer": 0,
+	"rightBuffer": 0,
+	"topBuffer": 0,
+	"bottomBuffer": 0,
+	"columns": 5,
+	"rows": 5,
+	"animations": [
+		{
+			"name": "IDLE",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 3
+				},
+				{
+					"index": 1,
+					"duration": 3
+				},
+				{
+					"index": 2,
+					"duration": 3
+				},
+				{
+					"index": 3,
+					"duration": 3
+				},
+				{
+					"index": 4,
+					"duration": 3
+				}
+			]
+		},
+
+
+		{
+			"name": "RUNNING",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 3
+				},
+				{
+					"index": 1,
+					"duration": 3
+				},
+				{
+					"index": 2,
+					"duration": 3
+				},
+				{
+					"index": 3,
+					"duration": 3
+				},
+				{
+					"index": 4,
+					"duration": 3
+				}
+			]
+		},
+
+
+		{
+			"name": "ATTACKING",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 7,
+					"duration": 3
+				},
+				{
+					"index": 8,
+					"duration": 3
+				},
+				{
+					"index": 9,
+					"duration": 3
+				},
+                {
+					"index": 10,
+					"duration": 3
+				},
+                {
+					"index": 11,
+					"duration": 3
+				},
+                {
+					"index": 12,
+					"duration": 3
+				}
+			]
+		},
+
+		{
+			"name": "TAKING_DAMAGE",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 14,
+					"duration": 3
+				},
+				{
+					"index": 15,
+					"duration": 3
+				},
+				{
+					"index": 16,
+					"duration": 3
+				},
+				{
+					"index": 17,
+					"duration": 3
+				},
+                {
+					"index": 18,
+					"duration": 3
+				}
+			]
+		},
+		{
+			"name": "DYING",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 19,
+					"duration": 5
+				},
+				{
+					"index": 20,
+					"duration": 5
+				}
+			]
+		},
+		{
+			"name": "DEAD",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 21,
+					"duration": 5
+				}
+			]
+		}
+	]
+}
