@@ -58,6 +58,7 @@ import Level2Scene from "./Level2Scene";
 import Level4Scene from "./Level4Scene";
 import Level5Scene from "./Level5Scene";
 import testMenu from "./MainMenu";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 
 const BattlerGroups = {
@@ -94,6 +95,8 @@ export default class Level3Scene extends HW4Scene {
     
     // protected shootAudioKey: string;
     // protected hitAudioKey: string;
+
+    protected levelMusicKey: string;
 
     //private zoomBool = false;
 
@@ -139,6 +142,9 @@ export default class Level3Scene extends HW4Scene {
     public static DYING_AUDIO_KEY = "PLAYER_DYING"
     public static DYING_AUDIO_PATH = "hw4_assets/sounds/dying.wav"
 
+    public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
+    public static readonly LEVEL_MUSIC_PATH = "hw4_assets/music/MainGameMusic.wav";
+
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -156,6 +162,7 @@ export default class Level3Scene extends HW4Scene {
         this.shootAudioKey = Level3Scene.SHOOT_AUDIO_KEY;
         this.hitAudioKey = Level3Scene.HIT_AUDIO_KEY;
         this.dyingAudioKey = Level3Scene.DYING_AUDIO_KEY;
+        this.levelMusicKey = Level3Scene.LEVEL_MUSIC_KEY;
     }
 
     /**
@@ -196,6 +203,7 @@ export default class Level3Scene extends HW4Scene {
         this.load.audio(this.shootAudioKey, Level3Scene.SHOOT_AUDIO_PATH);
         this.load.audio(this.hitAudioKey, Level3Scene.HIT_AUDIO_PATH);
         this.load.audio(this.dyingAudioKey, Level3Scene.DYING_AUDIO_PATH);
+        this.load.audio(this.levelMusicKey, Level3Scene.LEVEL_MUSIC_PATH);
 
     }
     
@@ -371,6 +379,7 @@ export default class Level3Scene extends HW4Scene {
         this.receiver.subscribe("helpcontrols");
         this.receiver.subscribe("nextlvl");
 
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.levelMusicKey, loop: true, holdReference: true});
         // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
     }
 
@@ -900,6 +909,11 @@ protected initializeNavmesh(): void {
 
     // Add this navmesh to the navigation manager
     this.navManager.addNavigableEntity("navmesh", navmesh);
+}
+
+public unloadScene(): void {
+    // The scene is being destroyed, so we can stop playing the song
+    this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.levelMusicKey});
 }
 
 
