@@ -40,6 +40,7 @@ import Level4Scene from "./Level4Scene";
 import Level5Scene from "./Level5Scene";
 import LastScene from "./LastScene";
 import testMenu from "./MainMenu";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 // import testScene from "./Level1Scene";
 
 const BattlerGroups = {
@@ -78,6 +79,8 @@ export default abstract class FinalProjectScene extends Scene {
     protected hitAudioKey: string;
 
     protected dyingAudioKey: string;
+
+    protected levelMusicKey: string;
 
     //private zoomBool = false;
 
@@ -293,6 +296,8 @@ export default abstract class FinalProjectScene extends Scene {
         this.receiver.subscribe("backcontrols");
         this.receiver.subscribe("helpcontrols");
         this.receiver.subscribe("nextlvl");
+
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.levelMusicKey, loop: true, holdReference: true});
 
         // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getShootAudioKey(), loop: false, holdReference: false});
     }
@@ -827,7 +832,10 @@ protected initializeNavmesh(): void {
     this.navManager.addNavigableEntity("navmesh", navmesh);
 }
 
-
+public unloadScene(): void {
+    // The scene is being destroyed, so we can stop playing the song
+    this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.levelMusicKey});
+}
 
 
     public abstract getBattlers(): Battler[];
