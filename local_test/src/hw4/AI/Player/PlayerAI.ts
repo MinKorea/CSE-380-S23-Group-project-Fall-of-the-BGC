@@ -2,6 +2,7 @@ import StateMachineAI from "../../../Wolfie2D/AI/StateMachineAI";
 import AI from "../../../Wolfie2D/DataTypes/Interfaces/AI";
 import Vec2 from "../../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../../Wolfie2D/Events/GameEvent";
+import { GameEventType } from "../../../Wolfie2D/Events/GameEventType";
 import PlayerActor from "../../Actors/PlayerActor";
 import { ItemEvent, PlayerEvent } from "../../Events";
 import Inventory from "../../GameSystems/ItemSystem/Inventory";
@@ -49,6 +50,10 @@ export default class PlayerAI extends StateMachineAI implements AI {
     public handleEvent(event: GameEvent): void {
         switch(event.type) {
             case "PLAYER_DAMAGED": {
+                console.log("hit audio  played");
+                
+                // Play hit audio here maybe
+                // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.owner.getScene().getHitAudioKey, loop: false, holdReference: false});
                 this.owner.health -= 1;
             }
             case ItemEvent.LASERGUN_FIRED: {
@@ -66,6 +71,10 @@ export default class PlayerAI extends StateMachineAI implements AI {
         if (this.owner.id !== actorId && this.owner.collisionShape !== undefined ) {
             if (this.owner.collisionShape.getBoundingRect().intersectSegment(to, from.clone().sub(to)) !== null
             || this.owner.collisionShape.center.distanceTo(to) < 55) {
+                // play hit audio here?
+                console.log("Hit audio played");
+                
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.owner.getScene().getHitAudioKey(), loop: false, holdReference: false});
                 this.owner.health -= 1;
                 
                 if(from.x >= to.x)   this.owner.animation.playIfNotAlready("TAKING_DAMAGE_LEFT", false, "IDLE");

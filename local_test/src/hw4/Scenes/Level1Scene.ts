@@ -56,6 +56,9 @@ export default class Level1Scene extends FinalProjectScene {
     public static SHOOT_AUDIO_KEY = "PLAYER_SHOOT"
     public static SHOOT_AUDIO_PATH = "hw4_assets/sounds/laserShoot.wav"
 
+    public static HIT_AUDIO_KEY = "PLAYER_HIT"
+    public static HIT_AUDIO_PATH = "hw4_assets/sounds/hit.wav"
+
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -70,6 +73,9 @@ export default class Level1Scene extends FinalProjectScene {
         this.healthpacks = new Array<Healthpack>();
 
         this.shootAudioKey = Level1Scene.SHOOT_AUDIO_KEY;
+
+        this.hitAudioKey = Level1Scene.HIT_AUDIO_KEY;
+        
     }
 
     /**
@@ -108,6 +114,7 @@ export default class Level1Scene extends FinalProjectScene {
         this.load.image(FinalProjectScene.COMPLETE_KEY, FinalProjectScene.COMPLETE_PATH);
 
         this.load.audio(this.shootAudioKey, Level1Scene.SHOOT_AUDIO_PATH);
+        this.load.audio(this.hitAudioKey, Level1Scene.HIT_AUDIO_PATH);
 
     }
     /**

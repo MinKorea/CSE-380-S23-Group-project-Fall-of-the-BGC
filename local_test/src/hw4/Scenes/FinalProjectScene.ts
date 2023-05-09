@@ -74,6 +74,8 @@ export default abstract class FinalProjectScene extends Scene {
     
     protected shootAudioKey: string;
 
+    protected hitAudioKey: string;
+
     //private zoomBool = false;
 
     // protected shootAudioKey: string;
@@ -385,6 +387,10 @@ export default abstract class FinalProjectScene extends Scene {
      if(Input.isKeyJustPressed("t")){
         this.player[0].position = this.bossLocation;
      }
+
+    
+
+
 
 }
 
@@ -833,6 +839,10 @@ protected initializeNavmesh(): void {
 
     public getShootAudioKey(): string {
         return this.shootAudioKey;
+    }
+
+    public getHitAudioKey(): string {
+        return this.hitAudioKey;
     }
 
     

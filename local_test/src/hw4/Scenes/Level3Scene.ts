@@ -92,6 +92,7 @@ export default class Level3Scene extends HW4Scene {
     protected boss: NPCActor;
     
     // protected shootAudioKey: string;
+    // protected hitAudioKey: string;
 
     //private zoomBool = false;
 
@@ -131,6 +132,8 @@ export default class Level3Scene extends HW4Scene {
     public static COMPLETE_KEY = "COMPLETE"
     public static COMPLETE_PATH = "hw4_assets/sprites/Level-Complete.png"
 
+    public static HIT_AUDIO_KEY = "PLAYER_HIT"
+    public static HIT_AUDIO_PATH = "hw4_assets/sounds/hit.wav"
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -146,6 +149,7 @@ export default class Level3Scene extends HW4Scene {
         this.healthpacks = new Array<Healthpack>();
 
         this.shootAudioKey = Level3Scene.SHOOT_AUDIO_KEY;
+        this.hitAudioKey = Level3Scene.HIT_AUDIO_KEY;
     }
 
     /**
@@ -184,6 +188,7 @@ export default class Level3Scene extends HW4Scene {
         this.load.image(Level3Scene.COMPLETE_KEY, Level3Scene.COMPLETE_PATH);
 
         this.load.audio(this.shootAudioKey, Level3Scene.SHOOT_AUDIO_PATH);
+        this.load.audio(this.hitAudioKey, Level3Scene.HIT_AUDIO_PATH);
 
     }
     

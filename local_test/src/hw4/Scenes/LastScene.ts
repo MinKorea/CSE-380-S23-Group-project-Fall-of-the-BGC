@@ -97,6 +97,7 @@ export default class LastScene extends HW4Scene {
     //private zoomBool = false;
 
     // protected shootAudioKey: string;
+    // protected hitAudioKey: string;
 
     protected bases: BattlerBase[];
 
@@ -133,6 +134,9 @@ export default class LastScene extends HW4Scene {
     public static SHOOT_AUDIO_KEY = "PLAYER_SHOOT"
     public static SHOOT_AUDIO_PATH = "hw4_assets/sounds/laserShoot.wav"
 
+    public static HIT_AUDIO_KEY = "PLAYER_HIT"
+    public static HIT_AUDIO_PATH = "hw4_assets/sounds/hit.wav"
+
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -147,6 +151,7 @@ export default class LastScene extends HW4Scene {
         this.healthpacks = new Array<Healthpack>();
 
         this.shootAudioKey = LastScene.SHOOT_AUDIO_KEY;
+        this.hitAudioKey = LastScene.HIT_AUDIO_KEY;
     }
 
     /**
@@ -186,6 +191,7 @@ export default class LastScene extends HW4Scene {
         this.load.image(LastScene.COMPLETE_KEY, LastScene.COMPLETE_PATH);
 
         this.load.audio(this.shootAudioKey, LastScene.SHOOT_AUDIO_PATH);
+        this.load.audio(this.hitAudioKey, LastScene.HIT_AUDIO_PATH);
 
     }
     
